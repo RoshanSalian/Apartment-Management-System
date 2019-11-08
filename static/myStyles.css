@@ -1,0 +1,108 @@
+:root{
+    --lightGrey: #DDDDDD;
+    --maroon: #800000;
+    --deepGreenLight: #00902080;
+    --deepBlueLight: #00008080;
+    --orangeLight: #FFA000A0;
+    --pinkLight: #F4BFBEC0;
+    --redLight: #FF000090;
+    --lightRed: #FF3333;
+    --lightBlue: #ADD8E6F0;
+    --lightGreen: #90EE90F0;
+}
+
+.bgSet {
+    background-image: url('/static/images/buildings.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.carousel-inner img {
+    width: 100%;
+    height: 100%;
+}
+
+.hoverArrow {
+    font-size: 12px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 8px;
+    padding-right: 8px
+}
+
+.hoverArrow span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.hoverArrow span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.hoverArrow:hover span {
+    padding-right: 25px;
+}
+
+.hoverArrow:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.infoTableRow{
+    width: 20%;
+    height: 50px;
+    text-align: center;
+}
+
+.roundCorner {
+	border-radius: 10px;
+}
+
+.zoom {
+    transition: transform .3s
+}
+
+.zoom:hover {
+    transform: scale(1.05);
+    z-index: 10
+}
+
+.zoomSmall {
+    display: block;
+    transition: transform .3s
+}
+
+.zoomSmall:hover {
+    transform: scale(1.02);
+    z-index: 10
+}
+
+.zoomText {
+    transition: transform .3s;
+    display: block;
+}
+
+.zoomText:hover {
+    transform: scale(1.05);
+    z-index: 10
+}
+
+.zoomToRight {
+    display: block;
+    transform-origin: 10%;
+    transition: transform .3s
+}
+
+.zoomToRight:hover {
+    
+    transform: scale(1.05);
+    z-index: 10
+}

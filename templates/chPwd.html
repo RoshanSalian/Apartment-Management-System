@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Change Password</title>
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
+
+</head>
+<body class="bgSet">
+
+	<h3>Welcome {{ user }}!</h3>
+	
+	<br><br><br><br><br>
+	
+	<center>
+		<div style="background-color: var(--lightGrey); max-width: 500px; border-radius: 15px">
+			<br><br>
+			<h4>Please change your password before continuing</h4>
+
+			<input type="password" class="form-control" placeholder="New password" id="newPwdInp" onkeyup="checkPwdOnKeyUp()" style="text-align: center; width: 300px; border: 2px solid red"><br>
+			<div id="pwdAlertText" style="margin-top: -20px; width: 350px"><font style="font-size: 12px; color: red">Password must contain at least one upper case letter, one lower case letter, one number and one special character</font></div>
+			<input type="password" class="form-control" placeholder="Confirm password" id="cnfPwdInp" style="text-align: center; margin-top: 10px; width: 300px" onkeyup="checkCnfPwdOnKeyUp()"><br>
+
+			<button id="submitButton" class="btn btn-info" onclick="submit()">Submit</button>
+
+			<br><br>
+		</div>
+	</center>
+
+<script>
+
+	function checkPwd(password){
+		return (password.match(/[a-z]/g) && password.match( 
+                /[A-Z]/g) && password.match( 
+                /[0-9]/g) && password.match( 
+                /[^a-zA-Z\d]/g) && password.length >= 8)
+	}
+
+	function checkPwdOnKeyUp(){
+		pwdAlertText = document.getElementById('pwdAlertText')
+		
+
+		newPwdInp = document.getElementById('newPwdInp')
+		newPwd = newPwdInp.value; 
+        if (checkPwd(newPwd)){
+            pwdAlertText.innerHTML = "";
+        	newPwdInp.style.border = "1px solid #ced4da";
+        	// document.getElementById('submitButton').disabled = false;
+    	}
+        else{
+            pwdAlertText.innerHTML = '<font style="font-size: 12px; color: red">Password must contain at least one upper case letter, one lower case letter, one number and one special character</font>';
+            newPwdInp.style.border = "2px solid red"
+            // document.getElementById('submitButton').disabled = true;
+        }
+
+		cnfPwdInp = document.getElementById('cnfPwdInp');
+		cnfPwd = cnfPwdInp.value;
+
+		if (newPwd == cnfPwd){
+			cnfPwdInp.style.border = "1px solid #ced4da"
+		}
+		else{
+			cnfPwdInp.style.border = "2px solid red"
+		}
+	}
+
+	function checkCnfPwdOnKeyUp(){
+		newPwdInp = document.getElementById('newPwdInp');
+		cnfPwdInp = document.getElementById('cnfPwdInp');
+
+		newPwd = newPwdInp.value;
+		cnfPwd = cnfPwdInp.value;
+
+		if (newPwd == cnfPwd){
+			cnfPwdInp.style.border = "1px solid #ced4da"
+		}
+		else{
+			cnfPwdInp.style.border = "2px solid red"
+		}
+
+	}
+
+	function submit(){
+
+		newPwdInp = document.getElementById('newPwdInp')
+		newPwd = newPwdInp.value; 
+
+        if (!checkPwd(newPwd)){
+            alert("Password must contain at least one upper case letter, one lower case letter, one number and one special character");
+            return;
+        }
+
+		cnfPwdInp = document.getElementById('cnfPwdInp')
+
+		if (newPwdInp.value == cnfPwdInp.value){
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function() {
+				if (request.responseText == "success"){
+					alert("Password changed successfully!")
+					window.location.href='/welcomeH';
+
+					newPwdInp.value = ""
+					cnfPwdInp.value = ""
+				}
+				else{
+					alert(request.responseText)
+				}
+				document.getElementById('submitButton').disabled = false;
+			}
+
+			pwd = encodeURIComponent(encodeURIComponent(newPwdInp.value))
+
+			document.getElementById('submitButton').disabled = true;
+			request.open("GET", "/chNewPwd/" + pwd, true);
+        	request.send();
+		}
+		else{
+			alert("Both entries must match!")
+		}
+
+	}
+</script>
+
+</body>
+</html>

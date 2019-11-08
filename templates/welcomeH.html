@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome</title>
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
+
+
+</head>
+<body class="bgSet">
+
+	<a href="/logout" style="float: right; margin: 10px"><button class="btn btn-primary">Logout</button></a>
+
+	<br>
+	<h4>Welcome {{ user }}!</h4>
+	
+
+	<br><br><br>
+	<div class="container-fluid">
+		<div class="row">
+
+			<div class="col-md-3" style="border-radius: 10px">
+
+				<div style="background-color: white; border-radius: 15px">
+
+					<br>
+
+
+					<center><table width="95%">
+
+						<tr>
+							<td><strong>Name:</strong></td>
+							<td><input type="text" id="userNameInp" value="{{ userName }}" disabled="true"></td>
+						</tr>
+
+						<tr>
+							<td><strong>DoB:</strong></td>
+							<td><input type="text" id="userDobInp" value="{{ userDoB }}" disabled="true"></td>
+						</tr>
+
+						<tr>
+							<td><strong>Email:</strong></td>
+							<td><input type="text" id="userEmailInp" value="{{ userEmail }}" disabled="true"></td>
+						</tr>
+
+						<tr>
+							<td><strong>Phone:</strong></td>
+							<td><input type="text" id="userPhoneInp" value="{{ userPhone }}" disabled="true"></td>
+						</tr>
+
+					</table></center>
+
+					<br>
+
+					<!-- <button class="btn btn-info" id="cancelButton">Cancel</button> -->
+
+					<button class="btn btn-primary" id="saveEditButton" style="float: right; margin-right: 20px" onclick="saveEdit()">Edit</button>
+
+					<br><br><br>
+
+					<center>
+						<a href="/homeOwner"><button class="btn btn-info">View Full Details</button></a>
+					</center>
+
+					<br>
+				</div>
+
+
+			</div>
+
+			<div class="col-md-3">
+
+				<div class="roundCorner" style="background-color: var(--lightGrey)">
+
+					<center>
+
+						<strong>Tenants</strong>
+						<br>
+
+						{{ tenants|safe }}
+						<!-- <a href="/tenants/1"><button class="btn btn-info">Vispi</button></a> -->
+
+					</center>
+
+					<br><br>
+					<button class="btn btn-info" style="float: right; margin-right: 10px" onclick="addTenant()"><strong>+</strong></button>
+
+					<br><br>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+<script>
+
+	function saveEdit(){
+		saveEditButton = document.getElementById('saveEditButton')
+
+		if (saveEditButton.innerHTML == 'Edit'){
+			document.getElementById('userNameInp').disabled = false;
+			document.getElementById('userPhoneInp').disabled = false;
+			document.getElementById('userDobInp').disabled = false;
+
+			saveEditButton.innerHTML = 'Save'
+		}
+		else{
+			document.getElementById('userNameInp').disabled = true;
+			document.getElementById('userPhoneInp').disabled = true;
+			document.getElementById('userDobInp').disabled = true;
+
+			phone = document.getElementById('userPhoneInp').value;
+			name = document.getElementById('userNameInp').value;
+			dob = document.getElementById('userDobInp').value;
+
+			if (phone == ""){
+				phone = "None"
+			}
+			if (name == ""){
+				name = "None"
+			}
+			if (dob == ""){
+				dob = "None"
+			}
+
+			saveEditButton.innerHTML = 'Edit'
+
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Updated successfully!")
+
+				}
+				else{
+					alert(request.responseText)
+				}
+
+			};
+
+			phone = encodeURIComponent(encodeURIComponent(phone))
+			name = encodeURIComponent(encodeURIComponent(name))
+			dob = encodeURIComponent(encodeURIComponent(dob))
+
+			request.open("GET", "/updateUser/"+phone+"/"+name+"/"+dob, true);
+        	request.send();
+		}
+	}
+
+	function addTenant(){
+
+		if (confirm("Do you want to add a new tenant?")){
+			name = prompt("Please provide the tenant's name:", "New Tenant")
+
+			if (name == null || name == "" || name == "null"){
+				return
+			}
+
+			name = encodeURIComponent(encodeURIComponent(name))
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText.substring(0,7) == "success"){
+					alert("Added successfully!")
+					tid = request.responseText.substring(8, request.responseText.length)
+					window.location.href='/tenant/'+tid;
+				}
+				else{
+					alert(request.responseText)
+				}
+
+			};
+
+			request.open("GET", "/addTenant/"+name, true);
+			request.send();
+		}
+	}
+
+
+</script>
+
+
+</body>
+</html>

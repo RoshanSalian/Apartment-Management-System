@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home Owner Details</title>
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
+
+</head>
+<body class="bgSet">
+
+	<br>
+
+	<div class="container-fluid">
+		
+		<div class="row">
+			
+			<div class="col-md-3">
+				
+				<div class="roundCorner" style="background-color: var(--lightGrey); padding: 10px">
+
+					<center>
+						<img src="{{ photo }}" style="width: 100px;" id="usrImg" data-toggle="modal" data-target="#editPhotoModal">
+						<br>
+						<strong id="usrName">{{ name }}</strong>
+						<br>
+						<font id="usrEmail">{{ email }}</font>
+						<br>
+						<font id="usrMobile">{{ mobile }}</font>
+					</center>
+
+				</div>
+
+			</div>
+
+			<div class="col-md-9">
+				
+				<div class="row roundCorner" style="background-color: var(--lightGrey); padding: 10px">
+
+					<div class="col">
+
+						<center>
+							
+							<table width="85%">
+
+								<tr>
+									<td><strong>Flat No:</strong></td>
+									<td><input type="text" id="userFlatInp" value="{{ flatNo }}" disabled="true"></td>
+									<td><button class="btn btn-info" id="userFlatEdit" onclick="editFlat()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+
+								<tr>
+									<td><strong>Name:</strong></td>
+									<td><input type="text" id="userNameInp" value="{{ name }}" disabled="true"></td>
+									<td><button class="btn btn-info" id="userNameEdit" onclick="editName()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+								
+								<tr>
+									<td><strong>Email:</strong></td>
+									<td><input type="text" id="userEmailInp" value="{{ email }}" disabled="true"></td>
+									<td><button class="btn btn-info" id="userEmailEdit" onclick="editEmail()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+
+								<tr>
+									<td><strong>Mobile:</strong></td>
+									<td><input type="text" id="userMobInp" value="{{ mobile }}" disabled="true"></td>
+									<td><button class="btn btn-info" id="userMobEdit" onclick="editMobile()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+
+								<tr>
+									<td><strong>DoB:</strong></td>
+									<td><input type="text" id="userDobInp" value="{{ dob }}" disabled="true"></td>
+									<td><button class="btn btn-info" id="userDobEdit" onclick="editDob()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+
+								<tr>
+									<td><strong>Father:</strong></td>
+									<td><input type="text" id="userFatherInp" value="{{ father }}" disabled="true"></td>
+									<td><button class="btn btn-info" id="userFatherEdit" onclick="editFather()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+
+								<tr>
+									<td><strong>Mother:</strong></td>
+									<td><input type="text" id="userMotherInp" value="{{ mother }}" disabled="true"></td>
+									<td><button class="btn btn-info" id="userMotherEdit" onclick="editMother()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+
+								<tr>
+									<td><strong>Occupation:</strong></td>
+									<td><input type="text" id="userOccuInp" value="{{ occupation }}" disabled="true"></td>
+									<td><button class="btn btn-info" id="userOccuEdit" onclick="editOccup()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+
+								<tr>
+									<td><strong>Communication Address:</strong></td>
+									<td><textarea id="userCommAddrInp" disabled="true">{{ comm_address }}</textarea></td>
+									<td><button class="btn btn-info" id="userCommAddrEdit" onclick="editCommAddress()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+
+								<tr>
+									<td><input type="checkbox" id="sameAddrCheck" style="float: right" onclick="copyAddress()"></td>
+									<td>Copy from above address</td>
+								</tr>
+
+								<tr>
+									<td><strong>Permanent Address:</strong></td>
+									<td><textarea id="userPermAddrInp" disabled="true">{{ perm_address }}</textarea></td>
+									<td><button class="btn btn-info" id="userPermAddrEdit" onclick="editPermAddress()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+
+								<tr>
+									<td><strong>Occupancy:</strong></td>
+									<td><input type="checkbox" id="occupancyCheck" {{ occupancy }} onclick="editOccupancy()">Occupying</td>
+									
+								</tr>
+
+							</table>
+
+						</center>
+						
+					</div>
+					<div class="col">
+
+						<center>
+
+							<table width="85%">
+								
+								<tr>
+									<td><strong>ID Proof</strong></td>
+									<td><button class="btn btn-info" data-toggle="modal" data-target="#viewIdProofModal">View</button></td>
+									<td><button class="btn btn-info" data-toggle="modal" data-target="#uploadIdProofModal">Upload</button></td>
+								</tr>
+								
+								<tr>
+									<td><strong>Communication Address Proof</strong></td>
+									<td><button class="btn btn-info" data-toggle="modal" data-target="#viewCommAddProofModal">View</button></td>
+									<td><button class="btn btn-info" data-toggle="modal" data-target="#uploadCommAddProofModal">Upload</button></td>
+								</tr>
+
+								<tr>
+									<td><strong>Permanent Address Proof</strong></td>
+									<td><button class="btn btn-info" data-toggle="modal" data-target="#viewPermAddProofModal">View</button></td>
+									<td><button class="btn btn-info" data-toggle="modal" data-target="#uploadPermAddProofModal">Upload</button></td>
+								</tr>
+
+								<tr>
+									<td><strong>Sale Deed</strong></td>
+									<td><button class="btn btn-info" data-toggle="modal" data-target="#viewSaleDeedModal">View</button></td>
+									<td><button class="btn btn-info" data-toggle="modal" data-target="#uploadSaleDeedModal">Upload</button></td>
+								</tr>
+
+							</table>
+							
+						</center>
+						
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="modal fade" id="editPhotoModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="editPhotoModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>Update Photo</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="editPhotoModalBody">
+	    			<form action="/editHomeOwnPhoto" method="POST" enctype = "multipart/form-data">
+	    				<input type="file" name="photoFile"/>
+	    				<input type="submit" value="Update Photo" />
+	    			</form>
+	    			
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="uploadIdProofModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="uploadIdProofModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>Upload ID Proof</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="uploadIdProofModalBody">
+	    			<form action="/uploadHomeOwnIdProof" method="POST" enctype = "multipart/form-data">
+	    				<input type="file" name="photoFile"/>
+	    				<input type="submit" value="Upload ID Proof" />
+	    			</form>
+	    			
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="uploadCommAddProofModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="uploadCommAddProofModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>Upload Address Proof</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="uploadCommAddProofModalBody">
+	    			<form action="/uploadHomeOwnCommAddrProof" method="POST" enctype = "multipart/form-data">
+	    				<input type="file" name="photoFile"/>
+	    				<input type="submit" value="Upload Communication Address Proof" />
+	    			</form>
+	    			
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="uploadPermAddProofModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="uploadPermAddProofModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>Upload Permanent Address Proof</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="uploadPermAddProofModalBody">
+	    			<form action="/uploadHomeOwnPermAddrProof" method="POST" enctype = "multipart/form-data">
+	    				<input type="file" name="photoFile"/>
+	    				<input type="submit" value="Upload Permanent Address Proof" />
+	    			</form>
+	    			
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="uploadSaleDeedModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="uploadSaleDeedModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>Upload Permanent Address Proof</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="uploadSaleDeedModalBody">
+	    			<form action="/uploadHomeOwnSaleDeed" method="POST" enctype = "multipart/form-data">
+	    				<input type="file" name="photoFile"/>
+	    				<input type="submit" value="Upload Sale Deed" />
+	    			</form>
+	    			
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="viewIdProofModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="viewIdProofModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>ID Proof</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="viewIdProofModalBody">
+	    			<center>
+	    				{{ idProof|safe }}
+	    			</center>
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="viewCommAddProofModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="viewCommAddProofModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>Communication Address Proof</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="viewCommAddProofModalBody">
+	    			<center>
+	    				{{ commAddProof|safe }}
+	    			</center>
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="viewPermAddProofModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="viewPermAddProofModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>Permanent Address Proof</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="viewPermAddProofModalBody">
+	    			<center>
+	    				{{ permAddProof|safe }}
+	    			</center>
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="viewSaleDeedModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="viewSaleDeedModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>Sale Deed</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="viewSaleDeedModalBody">
+	    			<center>
+	    				{{ saleDeed|safe }}
+	    			</center>
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+<script>
+	
+	uid = "{{ uid }}";
+	tid = "{{ tid }}";
+
+	editFlatOn = false;
+	editNameOn = false;
+	editEmailOn = false;
+	editMobileOn = false;
+	editDobOn = false;
+	editFatherOn = false;
+	editMotherOn = false;
+	editOccupOn = false;
+	editCommAddressOn = false;
+	editPermAddressOn = false;
+
+	function editFlat(){
+
+		userFlatInp = document.getElementById('userFlatInp')
+		userFlatEdit = document.getElementById('userFlatEdit')
+
+		if (editFlatOn){
+			userFlatInp.disabled = true;
+			userFlatEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editFlatOn = false;
+
+			flat = encodeURIComponent(encodeURIComponent(userFlatInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Flat No. updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userFlatEdit.disabled = false;
+
+			};
+
+			userFlatEdit.disabled = true;
+			request.open("GET", "/editHomeOwnFlat/"+flat, true);
+        	request.send();
+
+		}
+		else{
+			userFlatInp.disabled = false;
+			userFlatEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editFlatOn = true;
+
+		}
+	}
+
+	function editName(){
+
+		userNameInp = document.getElementById('userNameInp')
+		userNameEdit = document.getElementById('userNameEdit')
+
+		if (editNameOn){
+			userNameInp.disabled = true;
+			userNameEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editNameOn = false;
+
+			name = encodeURIComponent(encodeURIComponent(userNameInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Name updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userNameEdit.disabled = false;
+
+				document.getElementById('usrName').innerHTML = userNameInp.value
+
+			};
+
+			userNameEdit.disabled = true;
+			request.open("GET", "/editHomeOwnName/"+name, true);
+        	request.send();
+
+		}
+		else{
+			userNameInp.disabled = false;
+			userNameEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editNameOn = true;
+
+		}
+	}
+
+	function editEmail(){
+
+		userEmailInp = document.getElementById('userEmailInp')
+		userEmailEdit = document.getElementById('userEmailEdit')
+
+		if (editEmailOn){
+			userEmailInp.disabled = true;
+			userEmailEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editEmailOn = false;
+
+			email = encodeURIComponent(encodeURIComponent(userEmailInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Email updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userEmailEdit.disabled = false;
+
+				document.getElementById('usrEmail').innerHTML = userEmailInp.value
+
+			};
+
+			userEmailEdit.disabled = true;
+			request.open("GET", "/editHomeOwnEmail/"+email, true);
+        	request.send();
+
+		}
+		else{
+			userEmailInp.disabled = false;
+			userEmailEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editEmailOn = true;
+
+		}
+	}
+
+	function editMobile(){
+
+		userMobileInp = document.getElementById('userMobInp')
+		userMobileEdit = document.getElementById('userMobEdit')
+
+		if (editMobileOn){
+			userMobileInp.disabled = true;
+			userMobileEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editMobileOn = false;
+
+			mobile = encodeURIComponent(encodeURIComponent(userMobileInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Mobile updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userMobileEdit.disabled = false;
+
+				document.getElementById('usrMobile').innerHTML = userMobileInp.value
+
+			};
+
+			userMobileEdit.disabled = true;
+			request.open("GET", "/editHomeOwnPhone/"+mobile, true);
+        	request.send();
+
+		}
+		else{
+			userMobileInp.disabled = false;
+			userMobileEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editMobileOn = true;
+
+		}
+	}
+
+	function editDob(){
+
+		userDobInp = document.getElementById('userDobInp')
+		userDobEdit = document.getElementById('userDobEdit')
+
+		if (editDobOn){
+			userDobInp.disabled = true;
+			userDobEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editDobOn = false;
+
+			dob = encodeURIComponent(encodeURIComponent(userDobInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("DoB updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userDobEdit.disabled = false;
+
+			};
+
+			userDobEdit.disabled = true;
+			request.open("GET", "/editHomeOwnDob/"+dob, true);
+        	request.send();
+
+		}
+		else{
+			userDobInp.disabled = false;
+			userDobEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editDobOn = true;
+
+		}
+	}
+
+	function editFather(){
+
+		userFatherInp = document.getElementById('userFatherInp')
+		userFatherEdit = document.getElementById('userFatherEdit')
+
+		if (editFatherOn){
+			userFatherInp.disabled = true;
+			userFatherEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editFatherOn = false;
+
+			father = encodeURIComponent(encodeURIComponent(userFatherInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Father updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userFatherEdit.disabled = false;
+
+			};
+
+			userFatherEdit.disabled = true;
+			request.open("GET", "/editHomeOwnFather/"+father, true);
+        	request.send();
+
+		}
+		else{
+			userFatherInp.disabled = false;
+			userFatherEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editFatherOn = true;
+
+		}
+	}
+
+	function editMother(){
+
+		userMotherInp = document.getElementById('userMotherInp')
+		userMotherEdit = document.getElementById('userMotherEdit')
+
+		if (editMotherOn){
+			userMotherInp.disabled = true;
+			userMotherEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editMotherOn = false;
+
+			mother = encodeURIComponent(encodeURIComponent(userMotherInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Mother updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userMotherEdit.disabled = false;
+
+			};
+
+			userMotherEdit.disabled = true;
+			request.open("GET", "/editHomeOwnMother/"+mother, true);
+        	request.send();
+
+		}
+		else{
+			userMotherInp.disabled = false;
+			userMotherEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editMotherOn = true;
+
+		}
+	}
+
+	function editOccup(){
+
+		userOccupInp = document.getElementById('userOccuInp')
+		userOccupEdit = document.getElementById('userOccuEdit')
+
+		if (editOccupOn){
+			userOccupInp.disabled = true;
+			userOccupEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editOccupOn = false;
+
+			occup = encodeURIComponent(encodeURIComponent(userOccupInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Occupation updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userOccupEdit.disabled = false;
+
+			};
+
+			userOccupEdit.disabled = true;
+			request.open("GET", "/editHomeOwnOccup/"+occup, true);
+        	request.send();
+
+		}
+		else{
+			userOccupInp.disabled = false;
+			userOccupEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editOccupOn = true;
+
+		}
+	}
+
+	function editCommAddress(){
+
+		userAddrInp = document.getElementById('userCommAddrInp')
+		userAddrEdit = document.getElementById('userCommAddrEdit')
+
+		if (editCommAddressOn){
+			userAddrInp.disabled = true;
+			userAddrEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editCommAddressOn = false;
+
+			addr = encodeURIComponent(encodeURIComponent(userAddrInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Communication Address updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userAddrEdit.disabled = false;
+
+			};
+
+			userAddrEdit.disabled = true;
+			request.open("GET", "/editHomeOwnCommAddr/"+addr, true);
+        	request.send();
+
+		}
+		else{
+			userAddrInp.disabled = false;
+			userAddrEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editCommAddressOn = true;
+
+		}
+	}
+
+
+	function editPermAddress(){
+
+		userAddrInp = document.getElementById('userPermAddrInp')
+		userAddrEdit = document.getElementById('userPermAddrEdit')
+
+		if (editPermAddressOn){
+			userAddrInp.disabled = true;
+			userAddrEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editPermAddressOn = false;
+
+			addr = encodeURIComponent(encodeURIComponent(userAddrInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Permanent Address updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userAddrEdit.disabled = false;
+
+			};
+
+			userAddrEdit.disabled = true;
+			request.open("GET", "/editHomeOwnPermAddr/"+addr, true);
+        	request.send();
+
+		}
+		else{
+			userAddrInp.disabled = false;
+			userAddrEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editPermAddressOn = true;
+
+		}
+	}
+
+	function copyAddress(){
+		copyCheck = document.getElementById('sameAddrCheck');
+
+		if (copyCheck.checked){
+			cAdd = document.getElementById('userCommAddrInp');
+			pAdd = document.getElementById('userPermAddrInp');
+
+			pAdd.value = cAdd.value;
+
+			editPermAddressOn = true;
+
+			editPermAddress();
+		}
+	}
+
+	function editOccupancy(){
+
+		occupancyCheck = document.getElementById('occupancyCheck');
+
+		occup = "0"
+		if (occupancyCheck.checked){
+			occup = "1"
+		}
+
+		var request = new XMLHttpRequest();
+
+		request.onload = function(){
+			if (request.responseText == "success"){
+				alert("Occupancy updated successfully!")
+			}
+			else{
+				alert(request.responseText)
+			}
+			occupancyCheck.disabled = false;
+
+		};
+
+		occupancyCheck.disabled = true;
+		request.open("GET", "/editHomeOwnOccupancy/"+occup, true);
+    	request.send();
+
+
+	}
+
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
+
+</head>
+<body class="bgSet">
+	<center>
+
+		<h2>Apartment Management System</h2>
+		<br><br><br><br><br>
+	
+		<div style="background-color: var(--lightGrey); max-width: 500px; border-radius: 15px">
+			<br><br>
+			<font style="font-size: 20px"><strong>Log In to Your Account</strong></font><br><br>
+
+            <form method="POST">
+    			<input type="text" class="form-control" name="userid" placeholder="Apartment No. or User Id" id="uidInp" style="text-align: center; width: 400px" onkeyup="checkEntry()"><br>
+    			<input type="password" class="form-control" name="password" placeholder="Password" id="pwdInp" style="text-align: center; margin-top: -10px; width: 400px" onkeyup="checkEntry()"><br>
+
+                <input type="submit" class="btn btn-info" value="Submit" id="submitButton" disabled="true">
+            </form>
+
+            <br><br><br><br><br>
+			Not a user already? <a href="/register">Register</a>
+
+			<br><br>
+		</div>
+	</center>
+
+<script>
+
+    if ({{ invalid }}){
+        alert("Invalid credentials!")
+    }
+
+    function checkEntry(){
+        if (document.getElementById('uidInp').value != "" && document.getElementById('pwdInp').value != ""){
+            document.getElementById('submitButton').disabled = false;
+        }
+        else{
+            document.getElementById('submitButton').disabled = true;
+        }
+
+    }
+
+	
+</script>
+
+</body>
+</html>

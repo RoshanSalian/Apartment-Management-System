@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tenant Details</title>
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
+
+</head>
+<body class="bgSet">
+
+	<br>
+
+	<div class="container-fluid">
+		
+		<div class="row">
+			
+			<div class="col-md-3">
+				
+				<div class="roundCorner" style="background-color: var(--lightGrey); padding: 10px">
+
+					<center>
+						<img src="{{ photo }}" style="width: 100px;" id="tenImg" data-toggle="modal" data-target="#editPhotoModal">
+						<br>
+						<strong id="tenName">{{ name }}</strong>
+						<br>
+						<font id="tenEmail">{{ email }}</font>
+						<br>
+						<font id="tenMobile">{{ mobile }}</font>
+					</center>
+
+					<br><br>
+
+					<button class="btn btn-danger" style="float: right" onclick="removeTenant()">Remove Tenant</button>
+
+					<br><br>
+				</div>
+
+			</div>
+
+			<div class="col-md-9">
+				
+				<div class="row roundCorner" style="background-color: var(--lightGrey); padding: 10px">
+
+					<div class="col">
+
+						<center>
+							
+							<table width="85%">
+
+								<tr>
+									<td><strong>Name:</strong></td>
+									<td><input type="text" id="userNameInp" value="{{ name }}" disabled="true"></td>
+									<td><button class="btn btn-info" id="userNameEdit" onclick="editName()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+								
+								<tr>
+									<td><strong>Email:</strong></td>
+									<td><input type="text" id="userEmailInp" value="{{ email }}" disabled="true"></td>
+									<td><button class="btn btn-info" id="userEmailEdit" onclick="editEmail()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+
+								<tr>
+									<td><strong>Mobile:</strong></td>
+									<td><input type="text" id="userMobInp" value="{{ mobile }}" disabled="true"></td>
+									<td><button class="btn btn-info" id="userMobEdit" onclick="editMobile()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+
+								<tr>
+									<td><strong>DoB:</strong></td>
+									<td><input type="text" id="userDobInp" value="{{ dob }}" disabled="true"></td>
+									<td><button class="btn btn-info" id="userDobEdit" onclick="editDob()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+
+								<tr>
+									<td><strong>Father:</strong></td>
+									<td><input type="text" id="userFatherInp" value="{{ father }}" disabled="true"></td>
+									<td><button class="btn btn-info" id="userFatherEdit" onclick="editFather()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+
+								<tr>
+									<td><strong>Mother:</strong></td>
+									<td><input type="text" id="userMotherInp" value="{{ mother }}" disabled="true"></td>
+									<td><button class="btn btn-info" id="userMotherEdit" onclick="editMother()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+
+								<tr>
+									<td><strong>Occupation:</strong></td>
+									<td><input type="text" id="userOccuInp" value="{{ occupation }}" disabled="true"></td>
+									<td><button class="btn btn-info" id="userOccuEdit" onclick="editOccup()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+
+								<tr>
+									<td><strong>Address:</strong></td>
+									<td><input type="text" id="userAddrInp" value="{{ address }}" disabled="true"></td>
+									<td><button class="btn btn-info" id="userAddrEdit" onclick="editAddress()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+								</tr>
+
+							</table>
+
+						</center>
+						
+					</div>
+					<div class="col">
+
+						<center>
+
+							<table width="85%">
+								
+								<tr>
+									<td><strong>ID Proof</strong></td>
+									<td><button class="btn btn-info" data-toggle="modal" data-target="#viewIdProofModal">View</button></td>
+									<td><button class="btn btn-info" data-toggle="modal" data-target="#uploadIdProofModal">Upload</button></td>
+								</tr>
+								
+								<tr>
+									<td><strong>Address Proof</strong></td>
+									<td><button class="btn btn-info" data-toggle="modal" data-target="#viewAddProofModal">View</button></td>
+									<td><button class="btn btn-info" data-toggle="modal" data-target="#uploadAddProofModal">Upload</button></td>
+								</tr>
+
+							</table>
+							
+						</center>
+						
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="modal fade" id="editPhotoModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="editPhotoModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>Update Photo</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="editPhotoModalBody">
+	    			<form action="/editTenantPhoto/{{ tid }}" method="POST" enctype = "multipart/form-data">
+	    				<input type="file" name="photoFile"/>
+	    				<input type="submit" value="Update Photo" />
+	    			</form>
+	    			
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="uploadIdProofModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="uploadIdProofModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>Upload ID Proof</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="uploadIdProofModalBody">
+	    			<form action="/uploadTenantIdProof/{{ tid }}" method="POST" enctype = "multipart/form-data">
+	    				<input type="file" name="photoFile"/>
+	    				<input type="submit" value="Upload ID Proof" />
+	    			</form>
+	    			
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="uploadAddProofModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="uploadAddProofModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>Upload Address Proof</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="uploadAddProofModalBody">
+	    			<form action="/uploadTenantAddrProof/{{ tid }}" method="POST" enctype = "multipart/form-data">
+	    				<input type="file" name="photoFile"/>
+	    				<input type="submit" value="Upload Address Proof" />
+	    			</form>
+	    			
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="viewIdProofModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="viewIdProofModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>Address Proof</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="viewIdProofModalBody">
+	    			<center>
+	    				{{ idProof|safe }}
+	    			</center>
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="viewAddProofModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="viewAddProofModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>Address Proof</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="viewAddProofModalBody">
+	    			<center>
+	    				{{ addProof|safe }}
+	    			</center>
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+
+<script>
+	
+	uid = "{{ uid }}";
+	tid = "{{ tid }}";
+
+	editNameOn = false;
+	editEmailOn = false;
+	editMobileOn = false;
+	editDobOn = false;
+	editFatherOn = false;
+	editMotherOn = false;
+	editOccupOn = false;
+	editAddressOn = false;
+
+	function editName(){
+
+		userNameInp = document.getElementById('userNameInp')
+		userNameEdit = document.getElementById('userNameEdit')
+
+		if (editNameOn){
+			userNameInp.disabled = true;
+			userNameEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editNameOn = false;
+
+			name = encodeURIComponent(encodeURIComponent(userNameInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Name updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userNameEdit.disabled = false;
+
+				document.getElementById('tenName').innerHTML = userNameInp.value
+
+			};
+
+			userNameEdit.disabled = true;
+			request.open("GET", "/editTenantName/"+tid+"/"+name, true);
+        	request.send();
+
+		}
+		else{
+			userNameInp.disabled = false;
+			userNameEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editNameOn = true;
+
+		}
+	}
+
+	function editEmail(){
+
+		userEmailInp = document.getElementById('userEmailInp')
+		userEmailEdit = document.getElementById('userEmailEdit')
+
+		if (editEmailOn){
+			userEmailInp.disabled = true;
+			userEmailEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editEmailOn = false;
+
+			email = encodeURIComponent(encodeURIComponent(userEmailInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Email updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userEmailEdit.disabled = false;
+
+				document.getElementById('tenEmail').innerHTML = userEmailInp.value
+
+			};
+
+			userEmailEdit.disabled = true;
+			request.open("GET", "/editTenantEmail/"+tid+"/"+email, true);
+        	request.send();
+
+		}
+		else{
+			userEmailInp.disabled = false;
+			userEmailEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editEmailOn = true;
+
+		}
+	}
+
+	function editMobile(){
+
+		userMobileInp = document.getElementById('userMobInp')
+		userMobileEdit = document.getElementById('userMobEdit')
+
+		if (editMobileOn){
+			userMobileInp.disabled = true;
+			userMobileEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editMobileOn = false;
+
+			mobile = encodeURIComponent(encodeURIComponent(userMobileInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Mobile updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userMobileEdit.disabled = false;
+
+				document.getElementById('tenMobile').innerHTML = userMobileInp.value
+
+			};
+
+			userMobileEdit.disabled = true;
+			request.open("GET", "/editTenantMobile/"+tid+"/"+mobile, true);
+        	request.send();
+
+		}
+		else{
+			userMobileInp.disabled = false;
+			userMobileEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editMobileOn = true;
+
+		}
+	}
+
+	function editDob(){
+
+		userDobInp = document.getElementById('userDobInp')
+		userDobEdit = document.getElementById('userDobEdit')
+
+		if (editDobOn){
+			userDobInp.disabled = true;
+			userDobEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editDobOn = false;
+
+			dob = encodeURIComponent(encodeURIComponent(userDobInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("DoB updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userDobEdit.disabled = false;
+
+			};
+
+			userDobEdit.disabled = true;
+			request.open("GET", "/editTenantDob/"+tid+"/"+dob, true);
+        	request.send();
+
+		}
+		else{
+			userDobInp.disabled = false;
+			userDobEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editDobOn = true;
+
+		}
+	}
+
+	function editFather(){
+
+		userFatherInp = document.getElementById('userFatherInp')
+		userFatherEdit = document.getElementById('userFatherEdit')
+
+		if (editFatherOn){
+			userFatherInp.disabled = true;
+			userFatherEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editFatherOn = false;
+
+			father = encodeURIComponent(encodeURIComponent(userFatherInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Father updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userFatherEdit.disabled = false;
+
+			};
+
+			userFatherEdit.disabled = true;
+			request.open("GET", "/editTenantFather/"+tid+"/"+father, true);
+        	request.send();
+
+		}
+		else{
+			userFatherInp.disabled = false;
+			userFatherEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editFatherOn = true;
+
+		}
+	}
+
+	function editMother(){
+
+		userMotherInp = document.getElementById('userMotherInp')
+		userMotherEdit = document.getElementById('userMotherEdit')
+
+		if (editMotherOn){
+			userMotherInp.disabled = true;
+			userMotherEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editMotherOn = false;
+
+			mother = encodeURIComponent(encodeURIComponent(userMotherInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Mother updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userMotherEdit.disabled = false;
+
+			};
+
+			userMotherEdit.disabled = true;
+			request.open("GET", "/editTenantMother/"+tid+"/"+mother, true);
+        	request.send();
+
+		}
+		else{
+			userMotherInp.disabled = false;
+			userMotherEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editMotherOn = true;
+
+		}
+	}
+
+	function editOccup(){
+
+		userOccupInp = document.getElementById('userOccuInp')
+		userOccupEdit = document.getElementById('userOccuEdit')
+
+		if (editOccupOn){
+			userOccupInp.disabled = true;
+			userOccupEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editOccupOn = false;
+
+			occup = encodeURIComponent(encodeURIComponent(userOccupInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Occupation updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userOccupEdit.disabled = false;
+
+			};
+
+			userOccupEdit.disabled = true;
+			request.open("GET", "/editTenantOccup/"+tid+"/"+occup, true);
+        	request.send();
+
+		}
+		else{
+			userOccupInp.disabled = false;
+			userOccupEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editOccupOn = true;
+
+		}
+	}
+
+	function editAddress(){
+
+		userAddrInp = document.getElementById('userAddrInp')
+		userAddrEdit = document.getElementById('userAddrEdit')
+
+		if (editAddressOn){
+			userAddrInp.disabled = true;
+			userAddrEdit.innerHTML = '<i class="fa fa-pencil" style="font-size: 15px"></i>'
+			editAddressOn = false;
+
+			addr = encodeURIComponent(encodeURIComponent(userAddrInp.value));
+
+			var request = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert("Address updated successfully!")
+				}
+				else{
+					alert(request.responseText)
+				}
+				userAddrEdit.disabled = false;
+
+			};
+
+			userAddrEdit.disabled = true;
+			request.open("GET", "/editTenantAddr/"+tid+"/"+addr, true);
+        	request.send();
+
+		}
+		else{
+			userAddrInp.disabled = false;
+			userAddrEdit.innerHTML = '<i class="fa fa-save" style="font-size: 15px"></i>';
+			editAddressOn = true;
+
+		}
+	}
+
+	function removeTenant(){
+		if (confirm("Are you sure you want to remove "+document.getElementById('userNameInp').value+"?")){
+			
+			var request  = new XMLHttpRequest();
+
+			request.onload = function(){
+				if (request.responseText == "success"){
+					alert(document.getElementById('userNameInp').value+" removed successfully!");
+					window.location.href='/welcomeH';
+				}
+				else{
+					alert(request.responseText)
+				}
+			};
+
+			request.open("GET", "/removeTenant/"+tid, true);
+			request.send()
+		}
+	}
+
+
+</script>
+
+</body>
+</html>

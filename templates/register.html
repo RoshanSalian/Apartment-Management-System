@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Register</title>
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
+
+</head>
+<body class="bgSet">
+	<center>
+
+		<h2>Apartment Management System</h2>
+		<br><br><br><br><br>
+
+		<div style="background-color: var(--lightGrey); max-width: 500px; border-radius: 15px">
+			<br><br>
+			
+			<font style="font-size: 20px"><strong>Register Your Account</strong></font><br><br>
+
+			Apartment No.:
+			<form class="form-inline justify-content-center">
+
+				<input type="text" name="apt1" id="apt1" class="form-control" placeholder="0" style="text-align: center; width: 45px" maxlength="1" onblur="checkInpMax(this, 1)" onkeyup="checkAptNo(this, 1)">
+
+				<font style="font-size: 20px">&ensp;-&ensp;</font>
+
+				<input type="text" name="apt2" id="apt2" class="form-control" placeholder="X" style="text-align: center;width: 45px" maxlength="1" onblur="checkInpMax(this, 1)" onkeyup="checkAptNo(this, 1)">
+
+				<font style="font-size: 20px">&ensp;-&ensp;</font>
+
+				<input type="text" name="apt3" id="apt3" class="form-control" placeholder="00" style="text-align: center;width: 52px" maxlength="2" onblur="checkInpMax(this, 2)" onkeyup="checkAptNo(this, 2)">
+
+				<font style="font-size: 20px">&ensp;-&ensp;</font>
+
+				<input type="text" name="apt4" id="apt4" class="form-control" placeholder="000" style="text-align: center;width: 60px" maxlength="3" onblur="checkInpMax(this, 3)" onkeyup="checkAptNo(this, 3)">
+
+				<font style="font-size: 20px">&ensp;/&ensp;</font>
+
+				<input type="text" name="apt5" id="apt5" class="form-control" placeholder="0" style="text-align: center;width: 45px" maxlength="1" onblur="checkInpMax(this, 1)" onkeyup="checkAptNo(this, 1)">
+
+			</form>
+			
+			<br>
+
+			<div id="aptNoText" style="margin-top: -20px"></div>
+
+			<input type="text" class="form-control" name="email" placeholder="Email Address" id="emailInp" style="text-align: center; width: 355px; margin-top: 10px" onkeyup="checkEmailOnKeyUp()" onblur="checkEmailOnBlur()">
+
+			<br>
+
+			<form class="form-inline justify-content-center">
+			
+				<font style="font-size: 20px; margin-top: -10px">+&nbsp;</font>
+
+				<input type="text" class="form-control" name="isd" id="isdInp" placeholder="ISD" style="text-align: center; width: 60px; margin-top: -10px" maxlength="3" onkeyup="checkIsdOnKeyUp()" onblur="checkIsdOnBlur()">
+
+				&emsp;
+
+				<input type="text" class="form-control" name="phone" placeholder="Phone No." id="phoneInp" style="text-align: center; width: 260px; margin-top: -10px" maxlength="10" onkeyup="checkPhoneOnKeyUp()" onblur="checkPhoneOnBlur()">
+			
+			</form>
+
+			<br>
+			
+			<button id="submitButton" class="btn btn-info" onclick="submit()">Submit</button>
+
+			<br><br>
+		</div>
+
+	</center>
+
+
+<script>
+
+	var aptEx = false;
+	var aptInv = false;
+
+	function setInputFilter(textbox, inputFilter) {
+	  	["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+	    	textbox.addEventListener(event, function() {
+	      		if (inputFilter(this.value)) {
+			        this.oldValue = this.value;
+			        this.oldSelectionStart = this.selectionStart;
+			        this.oldSelectionEnd = this.selectionEnd;
+		      	} else if (this.hasOwnProperty("oldValue")) {
+			        this.value = this.oldValue;
+			        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+	      		}
+	    	});
+	  	});
+	}
+
+	setInputFilter(document.getElementById("apt1"), function(value) {
+	  	return /^[0-9]*$/.test(value);
+	});
+
+	setInputFilter(document.getElementById("apt2"), function(value) {
+	  	return /^[NSEW]*$/.test(value);
+	});
+
+	setInputFilter(document.getElementById("apt3"), function(value) {
+	  	return /^[0-9]*$/.test(value);
+	});
+
+	setInputFilter(document.getElementById("apt4"), function(value) {
+	  	return /^[0-9]*$/.test(value);
+	});
+
+	setInputFilter(document.getElementById("apt5"), function(value) {
+	  	return /^[0-9]*$/.test(value);
+	});
+
+	setInputFilter(document.getElementById("isdInp"), function(value) {
+	  	return /^[0-9]*$/.test(value);
+	});
+
+	setInputFilter(document.getElementById("phoneInp"), function(value) {
+	  	return /^[0-9]*$/.test(value);
+	});
+
+	function checkInpMax(ele, l){
+		if (ele.value.length != l){
+			ele.style.border = "2px solid red";
+		}
+		else{
+			ele.style.border = "1px solid #ced4da";
+		}
+	}
+
+
+	function checkAptNo(ele, l){
+
+		
+
+		if (ele.value.length == l){
+			ele.style.border = "1px solid #ced4da"
+		}
+
+		apt1 = document.getElementById('apt1').value;
+		apt2 = document.getElementById('apt2').value;
+		apt3 = document.getElementById('apt3').value;
+		apt4 = document.getElementById('apt4').value;
+		apt5 = document.getElementById('apt5').value;
+
+		aptNo = apt1+"-"+apt2+"-"+apt3+"-"+apt4+"/"+apt5
+
+
+		// aptInp = document.getElementById('aptInp');
+		// aptNo = aptInp.value;
+
+		if (aptNo.length == 12){
+			var request = new XMLHttpRequest();
+
+			request.onload = function() {
+	        	if (request.responseText == "exists"){
+	        		document.getElementById("aptNoText").innerHTML="<font style='font-size: 12px; color: red'>This apartment no. is already registered!</font>";
+	        		aptEx = true;
+	        	}
+	        	else if (request.responseText == "absent"){
+	        		document.getElementById("aptNoText").innerHTML="<font style='font-size: 12px; color: red'>This apartment no. is invalid!</font>";
+	        		aptInv = true;
+	        	}
+	        	else{
+	        		document.getElementById("aptNoText").innerHTML="";
+	        		aptEx = false;
+	        		aptInv = false;
+	        	}
+	        };
+
+	        aptNo = encodeURIComponent(encodeURIComponent(aptNo))
+
+			request.open("GET", "/checkAptNo/"+aptNo, true);
+	        request.send();
+    	}
+    	else{
+    		document.getElementById("aptNoText").innerHTML=""
+    	}
+	}
+
+	function checkEmailOnBlur(){
+		emailInp = document.getElementById('emailInp');
+		email = emailInp.value;
+
+		if (!validateEmail(email)){
+			emailInp.style.border = "2px solid red";
+		}
+	}
+
+	function checkEmailOnKeyUp(){
+		emailInp = document.getElementById('emailInp');
+		email = emailInp.value;
+
+		if (validateEmail(email)){
+			emailInp.style.border = "1px solid #ced4da";
+		}
+	}
+
+	function checkIsdOnBlur(){
+		isdInp = document.getElementById('isdInp');
+		isd = isdInp.value;
+
+		if (isd == ""){
+			isdInp.style.border = "2px solid red"
+		}
+	}
+
+	function checkIsdOnKeyUp(){
+		isdInp = document.getElementById('isdInp');
+		isd = isdInp.value;
+
+		if (isd != ""){
+			isdInp.style.border = "1px solid #ced4da";
+		}
+	}
+
+	function checkPhoneOnBlur(){
+		phoneInp = document.getElementById('phoneInp');
+		phone = phoneInp.value;
+
+		if (phone.length < 10){
+			phoneInp.style.border = "2px solid red"
+		}
+	}
+
+	function checkPhoneOnKeyUp(){
+		phoneInp = document.getElementById('phoneInp');
+		phone = phoneInp.value;
+
+		if (phone.length == 10){
+			phoneInp.style.border = "1px solid #ced4da";
+		}
+	}
+
+
+	function submit(){
+
+		apt1Inp = document.getElementById('apt1');
+		apt2Inp = document.getElementById('apt2');
+		apt3Inp = document.getElementById('apt3');
+		apt4Inp = document.getElementById('apt4');
+		apt5Inp = document.getElementById('apt5');
+
+		apt1 = apt1Inp.value;
+		apt2 = apt2Inp.value;
+		apt3 = apt3Inp.value;
+		apt4 = apt4Inp.value;
+		apt5 = apt5Inp.value;
+
+		aptNo = apt1+"-"+apt2+"-"+apt3+"-"+apt4+"/"+apt5
+
+		if (aptNo.length != 12){
+			if (apt1.length != 1){
+				apt1Inp.style.border = "2px solid red";
+			}
+			if (apt2.length != 1){
+				apt2Inp.style.border = "2px solid red";
+			}
+			if (apt3.length != 2){
+				apt3Inp.style.border = "2px solid red";
+			}
+			if (apt4.length != 3){
+				apt4Inp.style.border = "2px solid red";
+			}
+			if (apt5.length != 1){
+				apt5Inp.style.border = "2px solid red";
+			}
+			alert("Please enter the apartment number correctly!");
+			return;
+		}
+
+		if (aptEx){
+			alert("Apartment number already registered!");
+			return;
+		}
+
+		if (aptInv){
+			alert("Apartment number invalid!");
+			return;
+		}
+
+		emailInp = document.getElementById('emailInp');
+		email = emailInp.value;
+
+		if (!validateEmail(email)){
+			emailInp.style.border = "2px solid red";
+			alert("Please enter a valid email address!");
+			return;
+		}
+
+		isdInp = document.getElementById('isdInp');
+		isd = isdInp.value;
+
+		if (isd == ""){
+			isdInp.style.border = "2px solid red";
+			alert("Please enter the ISD code!")
+			return;
+		}
+
+		phoneInp = document.getElementById('phoneInp');
+		phone = phoneInp.value;
+
+		if (phone.length < 10){
+			phoneInp.style.border = "2px solid red";
+			alert("Please enter a valid phone number!");
+			return;
+		}
+
+		phone = "+" + isd + " " + phone
+
+
+		document.getElementById("submitButton").disabled = true;
+
+		var request = new XMLHttpRequest();
+
+		request.onload = function(){
+			
+			document.getElementById("submitButton").disabled = false;
+
+			if (request.responseText == "success"){
+				apt1Inp.value = "";
+				apt2Inp.value = "";
+				apt3Inp.value = "";
+				apt4Inp.value = "";
+				apt5Inp.value = "";
+				emailInp.value = "";
+				isdInp.value = "";
+				phoneInp.value = "";
+
+				alert("Successfully registered!\n\nPlease check your email for further instructions.")
+				window.location.href='/login';
+			}
+			else{
+				alert(request.responseText)
+			}
+
+		}
+
+		aptNo = encodeURIComponent(encodeURIComponent(aptNo))
+		email = encodeURIComponent(encodeURIComponent(email))
+		phone = encodeURIComponent(encodeURIComponent(phone))
+
+		request.open("GET", "/registerUser/"+aptNo+"/"+email+"/"+phone, true);
+        request.send();
+	}
+
+	function validateEmail(email) {
+		
+		var re = /^(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
+		if (re.test(email)){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+</script>
+
+</body>
+</html>
