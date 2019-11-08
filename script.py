@@ -131,10 +131,28 @@ def welcomeH():
 	for row in cursor:
 		tenants += "<a href='/tenant/"+str(row[0])+"'><button class='btn btn-info' style='margin: 5px'>"+row[1]+"</button></a><br>\n"
 
+	# Finding user type for additonal responsibilty
+	cursor = conn.execute("SELECT userType from users where user_id = '"+uid+"'" )
+	cursor = cursor.fetchall()
+	userType = cursor[0][0] # User type here
+
+	if(userType==0):
+		userTypeHTML =""
+
+	elif(userType==1):
+		userTypeHTML = "<a href=#>President</a>"
+
+	elif(userType==2):
+		userTypeHTML = "<a href=#>Secretary</a>"
+
+	elif(userType==3):
+		userTypeHTML = "<a href=#>Treasurer</a>"
+	else:
+		pass
 
 
-	return render_template('welcomeH.html', user = uid, userName = userName, userDoB = userDoB,
-		userEmail = userEmail, userPhone = userPhone, tenants =tenants)
+
+	return render_template('welcomeH.html', user = uid, userName = userName, userDoB = userDoB, userEmail = userEmail, userPhone = userPhone, tenants =tenants, userType=userTypeHTML)
 
 @app.route("/welcomeM")
 def welcomeM():
