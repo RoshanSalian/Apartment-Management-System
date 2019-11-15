@@ -36,7 +36,7 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'apartment.management.system.nitk@gmail.com'
-app.config['MAIL_PASSWORD'] = 'L54L48123'
+app.config['MAIL_PASSWORD'] = 'ComputingLab'
 
 mail = Mail(app)
 
@@ -106,6 +106,7 @@ def Secretary():
 @app.route("/Treasurer")
 def Treasurer():
 	return render_template('Treasurer.html')
+
 
 @app.route("/welcomeH")
 def welcomeH():
@@ -271,6 +272,24 @@ def complaint():
 	conn.close()
 
 	return redirect(url_for("complaint_page"))
+
+@app.route('/secretaryViewComplaint')
+def secretaryViewComplaint():
+	conn = sqlite3.connect('data/data.db')
+	cursor = conn.cursor()
+	cursor.execute("Select * from complaint")
+	rows = cursor.fetchall();
+	return render_template('secretaryViewComplaint.html', rows=rows)
+
+@app.route('/updateComplaintStatus/<id>')
+def updateComplaintStatus(id):
+	conn = sqlite3.connect('data/data.db')
+	cursor = conn.cursor()
+	cursor.execute("UPDATE complaint set status=1 where id='"+id+"' ")
+	conn.commit()
+	conn.close()
+	
+	return redirect(url_for("secretaryViewComplaint"))
 
 @app.route("/fLogin/<uid>/<pwd>")
 def fLogin(uid, pwd):
