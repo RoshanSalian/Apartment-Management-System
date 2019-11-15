@@ -10,6 +10,7 @@ import binascii
 from urllib.parse import quote, unquote
 from werkzeug import secure_filename
 import shutil
+from datetime import date
 
 def hash_password(password, salt):
 	pwdHash = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'), salt, 100000)
@@ -82,7 +83,7 @@ def login():
 				elif cursor[0][2] == 0:
 					return redirect(url_for('welcomeH'))
 				else:
-					return redirect(url_for('welcomeM'))
+					return redirect(url_for('welcomeH'))#modified here
 
 
 		return render_template('login.html', invalid = 'true')
@@ -94,6 +95,19 @@ def login():
 def register():
 	session.pop('user', None)
 	return render_template('register.html')
+
+@app.route("/President")
+def President():
+	return render_template('President.html')
+
+@app.route("/Secretary")
+def Secretary():
+	return render_template('Secretary.html')
+
+@app.route("/Treasurer")
+def Treasurer():
+	return render_template('Treasurer.html')
+
 
 @app.route("/welcomeH")
 def welcomeH():
@@ -141,13 +155,13 @@ def welcomeH():
 		userTypeHTML =""
 
 	elif(userType==1):
-		userTypeHTML = "<a href=#>President</a>"
+		userTypeHTML = "<a style=\"color:black;font-size:25px;text-decoration:none;\" href=\"President\">President</a>"
 
 	elif(userType==2):
-		userTypeHTML = "<a href=#>Secretary</a>"
+		userTypeHTML = "<a  style=\"color:black;font-size:25px;text-decoration:none;\" href=\"Secretary\" >Secretary</a>"
 
 	elif(userType==3):
-		userTypeHTML = "<a href=#>Treasurer</a>"
+		userTypeHTML = "<a  style=\"color:black;font-size:25px;text-decoration:none;\" href=\"Treasurer\" >Treasurer</a>"
 	else:
 		pass
 
@@ -163,7 +177,7 @@ def welcomeM():
 	else:
 		return redirect(url_for('login'))
 
-	return render_template('welcomeM.html', user = uid)
+	return render_template('welcomeH.html', user = uid)
 
 @app.route("/test")
 def test():
@@ -241,6 +255,53 @@ def registerUser(uid, email, phone):
 
 	except sqlite3.Error as error:
 		return error.message
+
+@app.route("/complaint_page/")
+def complaint_page():
+	return render_template("complaint.html")
+
+@app.route("/complaint",methods=['POST'])
+def complaint():
+	subject = request.form['subject']
+	category = request.form['category']
+	uid = session['user']
+	conn = sqlite3.connect('data/data.db')
+	print()
+	do = str(date.today())
+	conn.execute("INSERT INTO complaint (user_id, category, content, date) VALUES ('"+uid+"', '"+ category+"', '"+ subject+"', '"+do+"')")
+	conn.commit()
+	conn.close()
+
+	return redirect(url_for("complaint_page"))
+
+@app.route('/secretaryViewComplaint')
+def secretaryViewComplaint():
+	conn = sqlite3.connect('data/data.db')
+	cursor = conn.cursor()
+	cursor.execute("Select * from complaint")
+	rows = cursor.fetchall();
+	return render_template('secretaryViewComplaint.html', rows=rows)
+
+@app.route('/viewComplaint')
+def viewComplaint():
+	conn = sqlite3.connect('data/data.db')
+	cursor = conn.cursor()
+	cursor.execute("Select * from complaint")
+	rows = cursor.fetchall();
+	return render_template('viewComplaint.html', rows=rows)
+
+@app.route('/updateComplaintStatus/<id>')
+def updateComplaintStatus(id):
+	conn = sqlite3.connect('data/data.db')
+	cursor = conn.cursor()
+	cursor.execute("UPDATE complaint set status=1 where id='"+id+"' ")
+	conn.commit()
+	conn.close()
+
+	return redirect(url_for("secretaryViewComplaint"))
+
+
+
 
 @app.route("/fLogin/<uid>/<pwd>")
 def fLogin(uid, pwd):

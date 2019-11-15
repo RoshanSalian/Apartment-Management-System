@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome</title>
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+</head>
+
+<body class="bgSet">
+  <a href="/logout" style="float: right; margin: 10px"><button class="btn btn-primary">Logout</button></a>
+	<a href="/welcomeH" style="float: right; margin: 10px"><button class="btn btn-primary">Home</button></a>
+	<br>
+	<br>
+
+  <div class="form-group" style="text-align:center;margin-top:20px">
+    <form action="{{ url_for('complaint') }}" method="post" style="margin-top:100px;	">
+        <label for="category">Category</label>
+        <select id="category" name="category">
+          <option value="electrical">Electrical</option>
+          <option value="water">Water</option>
+          <option value="leakage">Leakage</option>
+        </select>
+        <br>
+        <label for="subject">Subject</label>
+        <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+
+  </div>
+
+</body>

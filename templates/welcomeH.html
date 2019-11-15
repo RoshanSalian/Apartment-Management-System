@@ -9,6 +9,11 @@
 	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
 
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
 
 </head>
 <body class="bgSet">
@@ -97,10 +102,23 @@
 
 		</div>
 
+		<br>
+		<button type="button" class="btn btn-warning">Dues</button>
+		<button type="button" class="btn btn-warning">Pay Maintainace</button>
+		<button type="button" class="btn btn-warning">View Income Expenditure</button>
+		<button type="button" class="btn btn-warning" onclick="complaint()">Complaint</button>
+		<button type="button" class="btn btn-warning">Notices</button>
+
+
+
 	</div>
 
 
 <script>
+
+	function complaint(){
+		window.location.href='/complaint_page/';
+	}
 
 	function saveEdit(){
 		saveEditButton = document.getElementById('saveEditButton')
