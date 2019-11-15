@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome</title>
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+</head>
+
+
+<body class="bgSet">
+	<a href="/logout" style="float: right; margin: 10px"><button class="btn btn-primary">Logout</button></a>
+	<br>
+  <br>
+  <br>
+  <br>
+  <div class="container-fluid">
+		<div class="row">
+      <div class="col-md-9">
+        <div class="row roundCorner" style="background-color: var(--lightGrey); padding: 10px">
+          <div class="col">
+						<center>
+							<table width="85%" align="center;" style="margin: 0px auto;">
+                <tr>
+                  <td><strong>Room number</strong></td>
+                  <td><strong>category</strong></td>
+                  <td><strong>Complaint</strong></td>
+                  <td><strong>Date</strong></td>
+                  <td><strong>ID</strong></td>
+                  <td><strong>Status</strong></td>
+                </tr>
+                {% for row in rows %}
+                <tr>
+                  <td>{{row[0]}}</td>
+                  <td>{{row[1]}}</td>
+                  <td>{{row[2]}}</td>
+                  <td>{{row[3]}}</td>
+                  <td>{{row[4]}}</td>
+                  <td>{{row[5]}}</td>
+                  <!-- <td><button class="btn btn-info" id={{row[4]}} onclick='javascript: editStatus({{row[4]}})'><i class="fa fa-pencil" style="font-size: 15px"></i></button></td> -->
+                </tr>
+                {% endfor %}
+              </table>
+            </center>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

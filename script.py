@@ -281,6 +281,14 @@ def secretaryViewComplaint():
 	rows = cursor.fetchall();
 	return render_template('secretaryViewComplaint.html', rows=rows)
 
+@app.route('/viewComplaint')
+def viewComplaint():
+	conn = sqlite3.connect('data/data.db')
+	cursor = conn.cursor()
+	cursor.execute("Select * from complaint")
+	rows = cursor.fetchall();
+	return render_template('viewComplaint.html', rows=rows)
+
 @app.route('/updateComplaintStatus/<id>')
 def updateComplaintStatus(id):
 	conn = sqlite3.connect('data/data.db')
@@ -288,8 +296,11 @@ def updateComplaintStatus(id):
 	cursor.execute("UPDATE complaint set status=1 where id='"+id+"' ")
 	conn.commit()
 	conn.close()
-	
+
 	return redirect(url_for("secretaryViewComplaint"))
+
+
+
 
 @app.route("/fLogin/<uid>/<pwd>")
 def fLogin(uid, pwd):
