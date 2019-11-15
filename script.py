@@ -256,17 +256,16 @@ def registerUser(uid, email, phone):
 
 @app.route("/complaint_page/")
 def complaint_page():
-	print("Page")
 	return render_template("complaint.html")
 
-@app.route("/complaint/<category>/<subject>")
-def complaint(category, subject):
-	# Shows error on sending DB data
-	print("Inside")
+@app.route("/complaint",methods=['POST'])
+def complaint():
+	subject = request.form['subject']
+	category = request.form['category']
 	uid = session['user']
 	conn = sqlite3.connect('data/data.db')
-	print(date.today())
-	do = "this"
+	print()
+	do = str(date.today())
 	conn.execute("INSERT INTO complaint (user_id, category, content, date) VALUES ('"+uid+"', '"+ category+"', '"+ subject+"', '"+do+"')")
 	conn.commit()
 	conn.close()

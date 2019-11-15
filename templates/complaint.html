@@ -19,9 +19,12 @@
 
 <body class="bgSet">
   <a href="/logout" style="float: right; margin: 10px"><button class="btn btn-primary">Logout</button></a>
+	<a href="/welcomeH" style="float: right; margin: 10px"><button class="btn btn-primary">Home</button></a>
+	<br>
+	<br>
 
   <div class="form-group" style="text-align:center;margin-top:20px">
-    <form method="POST" style="margin-top:100px;">
+    <form action="{{ url_for('complaint') }}" method="post" style="margin-top:100px;	">
         <label for="category">Category</label>
         <select id="category" name="category">
           <option value="electrical">Electrical</option>
@@ -32,25 +35,9 @@
         <label for="subject">Subject</label>
         <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
         <br>
-        <input type="submit" value="Submit" onclick="complaint_submit()">
+        <input type="submit" value="Submit">
     </form>
 
   </div>
-
-  <script>
-
-    function complaint_submit(){
-      var category = document.getElementById('category').value;
-      var subject = document.getElementById('subject').value;
-
-      var request = new XMLHttpRequest();
-
-      request.open("GET", "/complaint/"+category+"/"+subject, true);
-      request.send();
-
-    }
-
-
-  </script>
 
 </body>
