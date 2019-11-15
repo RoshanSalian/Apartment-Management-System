@@ -35,7 +35,7 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'apartment.management.system.nitk@gmail.com'
-app.config['MAIL_PASSWORD'] = 'L54L48123'
+app.config['MAIL_PASSWORD'] = 'ComputingLab'
 
 mail = Mail(app)
 
