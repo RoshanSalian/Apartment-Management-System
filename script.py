@@ -255,6 +255,23 @@ def registerUser(uid, email, phone):
 	except sqlite3.Error as error:
 		return error.message
 
+# Treasure Expense Record
+@app.route('/showExpenseForm')
+def showExpenseForm():
+	return render_template("treasurer_expense.html")
+
+@app.route('/makeRecord', methods=['POST'])
+def makeRecord():
+	name = request.form['name']
+	amount = request.form['amount']
+	typer = request.form['category']
+	conn = sqlite3.connect('data/data.db')
+	do = str(date.today())
+	conn.execute("INSERT INTO expense (name, amount, type, date ) VALUES ('"+name+"', '"+amount+"', '"+typer+"', '"+do+"')")
+	conn.commit()
+	conn.close()
+	return redirect(url_for("showExpenseForm"))
+
 @app.route("/complaint_page/")
 def complaint_page():
 	return render_template("complaint.html")
@@ -265,7 +282,6 @@ def complaint():
 	category = request.form['category']
 	uid = session['user']
 	conn = sqlite3.connect('data/data.db')
-	print()
 	do = str(date.today())
 	conn.execute("INSERT INTO complaint (user_id, category, content, date) VALUES ('"+uid+"', '"+ category+"', '"+ subject+"', '"+do+"')")
 	conn.commit()

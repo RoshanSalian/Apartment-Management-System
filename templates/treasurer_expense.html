@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome</title>
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+</head>
+
+<body class="bgSet">
+  <a href="/logout" style="float: right; margin: 10px"><button class="btn btn-primary">Logout</button></a>
+	<a href="/welcomeH" style="float: right; margin: 10px"><button class="btn btn-primary">Home</button></a>
+	<br>
+	<br>
+
+  <div class="form-group" style="text-align:center;margin-top:20px">
+    <form action="{{ url_for('makeRecord') }}" method="post" style="margin-top:100px;	">
+
+        <label for="category" style="text-align:center;">Category</label><br>
+        <select id="category" name="category">
+          <option value="electrical">Electrical</option>
+          <option value="water">Water</option>
+          <option value="miscellaneous">Miscellaneous</option>
+          <!-- Add other expense here  -->
+        </select>
+        <br>
+        <br>
+        <label for="name" style="text-align:center;">Name</label><br>
+        <input id="name" name="name" placeholder="Subject"></input>
+        <br>
+        <br>
+        <label for="amount" style="text-align:center;">Amount</label><br>
+        <input id="amount" name="amount" placeholder="amount"></input>
+        <br>
+        <br>
+        <!-- <label for="month" style="text-align:center;">Month</label><br>
+        <input id="month" name="month" placeholder="month"></input> -->
+        <label for="month" style="text-align:center;">Month</label><br>
+        <select id="month" name="month">
+          <option value="-">N.A.</option>
+          <option value="jan">January</option>
+          <option value="feb">Febraury</option>
+          <option value="mar">March</option>
+          <!-- For Seperate Table of 'ELECTRICITY', 'WATER' -->
+        </select>
+        <br>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+
+  </div>
+
+</body>
