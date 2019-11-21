@@ -255,6 +255,71 @@ def registerUser(uid, email, phone):
 	except sqlite3.Error as error:
 		return error.message
 
+# Secreatry Notice start
+@app.route('/createNotice')
+def createNotice():
+	conn = sqlite3.connect('data/data.db')
+	cur = conn.cursor()
+	cur.execute("SELECT * from notice;")
+	data = cur.fetchall()
+	return render_template('createNotice.html', data=data)
+
+@app.route('/recordNotice', methods=['POST'])
+def recordNotice():
+	print("Recieved")
+	ref = request.form['ref_no']
+	fromi = "Apartment Management"
+	toi = request.form['to']
+	title = request.form['title']
+	body = request.form['body']
+	do = str(date.today())
+	conn = sqlite3.connect('data/data.db')
+	conn.execute("INSERT INTO notice (ref_no, date, sender, receiver, title, body ) VALUES ('"+ref+"', '"+do+"', '"+fromi+"', '"+toi+"', '"+title+"', '"+body+"')")
+	conn.commit()
+	conn.close()
+
+	return redirect(url_for("createNotice"))
+
+@app.route('/deleteNotice/<id>')
+def deleteNotice(id):
+	conn = sqlite3.connect('data/data.db')
+	print("QER")
+	print(id)
+	conn.execute("DELETE from notice where ref_no='"+id+"'  ")
+	conn.commit()
+	conn.close()
+	return redirect(url_for("createNotice"))
+# Secretary Notice end
+
+#User Notice Display
+@app.route('/showNotice')
+def showNotice():
+	conn = sqlite3.connect('data/data.db')
+	cur = conn.cursor()
+	cur.execute("SELECT * from notice where approved='1';")
+	data = cur.fetchall()
+	return render_template("showNotice.html", data=data)
+
+# President approve Notices
+@app.route('/approveNotice')
+def approveNotice():
+	conn = sqlite3.connect('data/data.db')
+	cur = conn.cursor()
+	cur.execute("SELECT * from notice;")
+	data = cur.fetchall()
+	return render_template("approveNotice.html", data=data)
+
+@app.route('/approveRecord/<id>')
+def approveRecord(id):
+	conn = sqlite3.connect('data/data.db')
+	cur = conn.cursor()
+	cur.execute("UPDATE notice SET approved='1' where ref_no='"+id+"'")
+	conn.commit()
+	conn.close()
+	print(id)
+	return redirect(url_for("approveNotice"))
+
+
 # Treasure Expense Record
 @app.route('/showExpenseForm')
 def showExpenseForm():
@@ -274,7 +339,24 @@ def makeRecord():
 
 @app.route("/complaint_page/")
 def complaint_page():
-	return render_template("complaint.html")
+	# Display user complaints with create option
+	uid = session['user']
+	conn = sqlite3.connect('data/data.db')
+	cur = conn.cursor()
+	cur.execute("SELECT * from complaint where user_id='"+uid+"' ")
+	data = cur.fetchall()
+	return render_template("complaint.html", data=data)
+
+@app.route("/deleteComplaint/<id>")
+def deleteComplaint(id):
+	print("THis")
+	conn = sqlite3.connect('data/data.db')
+	cursor = conn.cursor()
+	cursor.execute("DELETE FROM complaint where id='"+id+"' ")
+	conn.commit()
+	conn.close()
+
+	return redirect(url_for("complaint_page"))
 
 @app.route("/complaint",methods=['POST'])
 def complaint():
@@ -309,13 +391,21 @@ def viewComplaint():
 def updateComplaintStatus(id):
 	conn = sqlite3.connect('data/data.db')
 	cursor = conn.cursor()
-	cursor.execute("UPDATE complaint set status=1 where id='"+id+"' ")
+	cursor.execute("UPDATE complaint set status='Resolved' where id='"+id+"' ")
 	conn.commit()
 	conn.close()
 
 	return redirect(url_for("secretaryViewComplaint"))
 
+@app.route('/updateComplaintStatus2/<id>')
+def updateComplaintStatus2(id):
+	conn = sqlite3.connect('data/data.db')
+	cursor = conn.cursor()
+	cursor.execute("UPDATE complaint set status='Denied' where id='"+id+"' ")
+	conn.commit()
+	conn.close()
 
+	return redirect(url_for("secretaryViewComplaint"))
 
 
 @app.route("/fLogin/<uid>/<pwd>")

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome</title>
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+</head>
+<body class="bgSet">
+
+  <a href="/logout" style="float: right; margin: 10px"><button class="btn btn-primary">Logout</button></a>
+	<a href="/welcomeH" style="float: right; margin: 10px"><button class="btn btn-primary">Home</button></a>
+	<br>
+	<br>
+  <!-- Need to display upto what is paid -->
+  <div class="form-group" style="text-align:center;margin-top:20px">
+    <form action="{{ url_for('maintainanceRecord') }}" method="post" style="margin-top:100px;	">
+
+        <label for="uptoMonth">Month</label>
+        <select id="uptoMonth" name="uptoMonth">
+          <option value="january">January</option>
+          <option value="february">Febraury</option>
+          <option value="march">March</option>
+          <option value="april">April</option>
+          <option value="may">May</option>
+          <option value="june">June</option>
+          <option value="july">July</option>
+          <option value="august">August</option>
+          <option value="september">September</option>
+          <option value="october">October</option>
+          <option value="november">november</option>
+          <option value="december">December</option>
+        </select>
+        <br>
+        <label for="amount">Amount</label>
+        <input id="amount" name="amount"></textarea>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+
+  </div>
+
+</body>
+</html>

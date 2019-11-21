@@ -104,10 +104,10 @@
 
 		<br>
 		<button type="button" class="btn btn-warning">Dues</button>
-		<button type="button" class="btn btn-warning">Pay Maintainace</button>
+		<button type="button" class="btn btn-warning" onclick="pay()">Pay Maintainace</button>
 		<button type="button" class="btn btn-warning">View Income Expenditure</button>
 		<button type="button" class="btn btn-warning" onclick="complaint()">Complaint</button>
-		<button type="button" class="btn btn-warning">Notices</button>
+		<button type="button" class="btn btn-warning" onclick="showNotice()">Notices</button>
 
 
 
@@ -115,6 +115,14 @@
 
 
 <script>
+
+	function showNotice(){
+		window.location.href='/showNotice';
+	}
+
+	function pay(){
+		window.location.href='/payMaintainance';
+	}
 
 	function complaint(){
 		window.location.href='/complaint_page/';
