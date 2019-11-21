@@ -27,8 +27,16 @@
   <button type="button" class="btn btn-warning">Monthly Maintainace charges</button>
   <button type="button" class="btn btn-warning">Financial Status</button>
   <button type="button" class="btn btn-warning">Dues</button>
-  <button type="button" class="btn btn-warning">Other Expense</button>
+  <button type="button" class="btn btn-warning" onclick="showExpenseForm()">Other Expense</button>
   <button type="button" class="btn btn-warning">Balance sheets</button>
   <button type="button" class="btn btn-warning">Regular Payment</button>
 
+	<script>
+			function showExpenseForm(){
+				window.location.href='/showExpenseForm';
+			}
+	</script>
+
+
 </body>
+</html>
