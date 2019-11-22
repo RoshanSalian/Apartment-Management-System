@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome</title>
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+</head>
+
+
+<body class="bgSet">
+	<a href="/logout" style="float: right; margin: 10px"><button class="btn btn-primary">Logout</button></a>
+  <a href="/welcomeH" style="float: right; margin: 10px"><button class="btn btn-primary">Home</button></a>
+  <br>
+
+  <br><br><br>
+  <div style="text-align:center; background-color: white; border-radius:15px;">
+		<center>
+			<table  width="65%" align="center;" style="margin: 0px auto;">
+				<tr>
+					<td><b>Door Number</b></td>
+			    <td><b>Email</b></td>
+			    <td><b>Phone</b></td>
+					<td><b>Name</b></td>
+					<td><b>D.O.B</b></td>
+          <td><b>flat_no</b></td>
+				<tr>
+				<br>
+				{% for item in data %}
+				<tr>
+					<td>{{item[0]}}</td>
+			    <td>{{item[1]}}</td>
+			    <td>{{item[2]}}</td>
+					<td>{{item[3]}}</td>
+					<td>{{item[4]}}</td>
+          <td>{{item[16]}}</td>
+				<tr>
+				{% endfor %}
+			</table>
+		</center>
+	</div>
+
+</body>
+</html>

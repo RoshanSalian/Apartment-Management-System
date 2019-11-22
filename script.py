@@ -258,8 +258,12 @@ def registerUser(uid, email, phone):
 # President Flat Owner Info
 @app.route('/displayFlatOwner')
 def displayFlatOwner():
-	print("Not functional")
-	return render_template('President.html')
+	# print("Not functional")
+	conn = sqlite3.connect('data/data.db')
+	cur = conn.cursor()
+	cur.execute("SELECT * from homeOwns;")
+	data = cur.fetchall()
+	return render_template('flatOwnerInfo.html', data=data)
 
 @app.route('/approveProfile')
 def approveProfile():
