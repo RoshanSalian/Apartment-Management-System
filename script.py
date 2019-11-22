@@ -1,3 +1,4 @@
+# hello
 from flask import Flask, session, render_template, request, redirect, g, url_for
 from flask_mail import Mail, Message
 import os
@@ -9,7 +10,7 @@ import binascii
 from urllib.parse import quote, unquote
 from werkzeug import secure_filename
 import shutil
-from datetime import date
+from datetime import date, datetime
 
 def hash_password(password, salt):
 	pwdHash = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'), salt, 100000)
@@ -204,7 +205,7 @@ def checkAptNo(aptNo):
 
 	if len(cursor) == 0:
 		return "absent"
-	elif cursor[0][0] == 1:
+	elif cursor[0][0] != 0:
 		return "exists"
 	else:
 		return "open"
@@ -227,11 +228,7 @@ def registerUser(uid, email, phone):
 
 
 	try:
-		conn.execute("INSERT INTO homeOwns (aptNo, email, phone) VALUES ('"+uid+"', '"+email+"', '"+phone+"')")
-		conn.execute("INSERT INTO users VALUES ('"+uid+"', '"+pwdHash+"', '"+str(salt)[2:-1]+"', 0, 0)")
-		conn.execute("UPDATE apartments SET registered=1 WHERE aptNo='"+uid+"'")
-		conn.commit()
-		conn.close()
+
 
 		msg = Message('Welcome to Apt Mgmt Sys',
 			sender = 'apartment.management.system.nitk@gmail.com',
@@ -248,12 +245,25 @@ def registerUser(uid, email, phone):
 
 		mail.send(msg)
 
+		today = datetime.today()
+		year = today.year
+		month = today.month
+		monthNum = (year - 1970) * 12 + month
+
+		conn.execute("INSERT INTO homeOwns (aptNo, email, phone) VALUES ('"+uid+"', '"+email+"', '"+phone+"')")
+		conn.execute("INSERT INTO users VALUES ('"+uid+"', '"+pwdHash+"', '"+str(salt)[2:-1]+"', 0, 0)")
+		conn.execute("UPDATE apartments SET registered="+str(monthNum)+" WHERE aptNo='"+uid+"'")
+		conn.execute("CREATE TABLE Maint_"+uid.replace("-", "_").replace("/", "_")+" (month INT, tran_num TEXT, amount REAL)")
+		conn.commit()
+		conn.close()
+
 		os.mkdir("static/images/homeOwns/"+secure_filename(uid))
 
 		return "success"
 
-	except sqlite3.Error as error:
-		return error.message
+	except Exception as error:
+		print(error)
+		return error
 
 # President Flat Owner Info
 @app.route('/displayFlatOwner')
@@ -440,7 +450,97 @@ def updateComplaintStatus2(id):
 	conn.commit()
 	conn.close()
 
-	return redirect(url_for("secretaryViewComplaint"))
+@app.route('/payment')
+def payment():
+	if 'user' in session:
+		uid = session['user']
+	else:
+		return redirect(url_for('login'))
+
+	today = datetime.today()
+	year = today.year
+	month = today.month
+	monthNum = (year - 1970) * 12 + month
+
+	conn = sqlite3.connect('data/data.db')
+
+	cursor = conn.execute("SELECT * FROM apartments WHERE aptNo='"+uid+"'")
+
+	cursor = cursor.fetchall()
+
+	regMonth = cursor[0][1]
+
+	maintAmt = cursor[0][5] * 5 + cursor[0][6] * 100
+
+	cursor = conn.execute("SELECT * FROM Maint_"+uid.replace("-", "_").replace("/", "_"))
+
+	cursor = cursor.fetchall()
+
+	if len(cursor) != 0:
+		lastMonth = cursor[-1][0]
+	else:
+		lastMonth = regMonth - 1
+
+	toPay = monthNum - lastMonth
+
+	if toPay > 0:
+		payDet = "You need to <strong>pay</strong> maintenance for <strong>" + str(toPay) + " months</strong>."
+	elif toPay == 0:
+		payDet = "Your maintenance payment is <strong>settled up!</strong>"
+	else:
+		payDet = "You have paid maintenance for <strong>" + str(-1 * toPay) + " months</strong> in <strong>advance</strong>."
+
+	return render_template('payment.html', user = uid, payDet = payDet, maintAmt = maintAmt)
+
+@app.route('/makePayment/<months>')
+def makePayment(months):
+
+	if 'user' in session:
+		uid = session['user']
+	else:
+		return redirect(url_for('login'))
+
+	months = int(months)
+
+	try:
+		conn = sqlite3.connect('data/data.db')
+
+		cursor = conn.execute("SELECT * FROM apartments WHERE aptNo='"+uid+"'")
+
+		cursor = cursor.fetchall()
+
+		regMonth = cursor[0][1]
+
+		maintAmt = cursor[0][5] * 5 + cursor[0][6] * 100
+
+		cursor = conn.execute("SELECT * FROM Maint_"+uid.replace("-", "_").replace("/", "_"))
+
+		cursor = cursor.fetchall()
+
+		if len(cursor) != 0:
+			lastMonth = cursor[-1][0]
+		else:
+			lastMonth = regMonth - 1
+
+		tranLength = 10
+		tran_characters = string.ascii_letters + string.digits
+		tranNum = ''.join(random.choice(tran_characters) for i in range(tranLength))
+
+		for i in range(months):
+			lastMonth += 1
+
+			conn.execute("INSERT INTO Maint_"+uid.replace("-", "_").replace("/", "_") + " VALUES ("+str(lastMonth)+", '"+tranNum+"', "+str(maintAmt)+")")
+
+		conn.commit()
+		conn.close()
+
+		return tranNum
+
+	except Exception as e:
+
+		print(e)
+
+		return "failure"
 
 
 @app.route("/fLogin/<uid>/<pwd>")
