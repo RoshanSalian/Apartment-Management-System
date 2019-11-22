@@ -23,17 +23,29 @@
 	<br>
 
   <button type="button" class="btn btn-warning">Resonsibity</button>
-  <button type="button" class="btn btn-warning">View Flat Owner Profile</button>
-  <button type="button" class="btn btn-warning">Approve New Profile</button>
+  <button type="button" class="btn btn-warning" onclick="displayFlatOwner()">View Flat Owner Profile</button>
+  <button type="button" class="btn btn-warning" onclick="approveProfile()">Approve New Profile</button>
   <button type="button" class="btn btn-warning">Financial Status</button>
   <button type="button" class="btn btn-warning">Income Expenditure</button>
   <button type="button" class="btn btn-warning" onclick="viewComplaint()">View Comaplaint</button>
-  <button type="button" class="btn btn-warning">Approve Payment</button>
-  <button type="button" class="btn btn-warning">Approve Notices</button>
+  <!-- <button type="button" class="btn btn-warning">Approve Payment</button> -->
+  <button type="button" class="btn btn-warning" onclick="approveNotice()">Approve Notices</button>
 
 <script>
+
+		function approveProfile(){
+			window.location.href='/approveProfile';
+		}
+
+		function displayFlatOwner(){
+			window.location.href='/displayFlatOwner';
+		}
+
 		function viewComplaint(){
 			window.location.href='/viewComplaint';
+		}
+		function approveNotice(){
+			window.location.href='/approveNotice';
 		}
 </script>
 

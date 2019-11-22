@@ -20,27 +20,35 @@
 
 <body class="bgSet">
 	<a href="/logout" style="float: right; margin: 10px"><button class="btn btn-primary">Logout</button></a>
-	<a href="/welcomeH" style="float: right; margin: 10px"><button class="btn btn-primary">Home</button></a>
-	<br>
+  <a href="/welcomeH" style="float: right; margin: 10px"><button class="btn btn-primary">Home</button></a>
+  <br>
 
-  <button type="button" class="btn btn-warning">responsibilty</button>
-  <button type="button" class="btn btn-warning">Upload and Verify Docs</button>
-  <button type="button" class="btn btn-warning">User Profile Management(c, r, d)</button>
-  <button type="button" class="btn btn-warning">Financial Status</button>
-  <button type="button" class="btn btn-warning">Dues</button>
-  <button type="button" class="btn btn-warning">Income Expenditure</button>
-  <button type="button" class="btn btn-warning" onclick="secretaryViewComplaint()">View/Change complaint status</button>
-  <button type="button" class="btn btn-warning" onclick="createNotice()">C/V/U/D Notices/Letters</button>
-
-
-<script>
-	function secretaryViewComplaint(){
-		window.location.href='/secretaryViewComplaint';
-	}
-	function createNotice(){
-		window.location.href='/createNotice'
-	}
-</script>
+  <br><br><br>
+  <div style="text-align:center; background-color: white; border-radius:15px;">
+		<center>
+			<table  width="65%" align="center;" style="margin: 0px auto;">
+				<tr>
+					<td><b>Door Number</b></td>
+			    <td><b>Email</b></td>
+			    <td><b>Phone</b></td>
+					<td><b>Name</b></td>
+					<td><b>D.O.B</b></td>
+          <td><b>flat_no</b></td>
+				<tr>
+				<br>
+				{% for item in data %}
+				<tr>
+					<td>{{item[0]}}</td>
+			    <td>{{item[1]}}</td>
+			    <td>{{item[2]}}</td>
+					<td>{{item[3]}}</td>
+					<td>{{item[4]}}</td>
+          <td>{{item[16]}}</td>
+				<tr>
+				{% endfor %}
+			</table>
+		</center>
+	</div>
 
 </body>
 </html>

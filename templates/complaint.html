@@ -23,21 +23,56 @@
 	<br>
 	<br>
 
+	<div class="displayComplaint" style="text-align:center">
+		<center>
+			<table width="65%" align="center;" style="margin: 0px auto;">
+				<tr>
+					<td><b>ID</b></td>
+			    <td><b>Category</b></td>
+			    <td><b>Content</b></td>
+					<td><b>Date</b></td>
+					<td><b>Status</b></td>
+				<tr>
+				<br>
+				{% for item in data %}
+				<tr>
+					<td>{{item[4]}}</td>
+			    <td>{{item[1]}}</td>
+			    <td>{{item[2]}}</td>
+					<td>{{item[3]}}</td>
+					<td>{{item[5]}}</td>
+					<td><button class="btn btn-info" id={{item[4]}} onclick='javascript: editStatus({{item[4]}})'><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+				<tr>
+				{% endfor %}
+			</table>
+		</center>
+	</div>
+
   <div class="form-group" style="text-align:center;margin-top:20px">
     <form action="{{ url_for('complaint') }}" method="post" style="margin-top:100px;	">
-        <label for="category">Category</label>
+				<h3>Create Complaint</h3>
+        <label for="category" style="text-align:center;">Category</label><br>
         <select id="category" name="category">
           <option value="electrical">Electrical</option>
-          <option value="water">Water</option>
-          <option value="leakage">Leakage</option>
+          <option value="plumbing">Plumbing</option>
+          <option value="civil">Civil</option>
+					<option value="facility">Facility</option>
         </select>
         <br>
-        <label for="subject">Subject</label>
-        <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+        <label for="subject" class="text-align:center;">Subject</label><br>
+        <textarea id="subject" name="subject" placeholder="Write about your complaint.." style="height:200px"></textarea>
         <br>
         <input type="submit" value="Submit">
     </form>
-
   </div>
+
+<script>
+	function editStatus(id){
+		var request = new XMLHttpRequest();
+		var id = id;
+    request.open("GET", "/deleteComplaint/"+id);
+    request.send();
+	}
+</script>
 
 </body>

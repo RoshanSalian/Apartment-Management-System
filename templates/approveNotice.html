@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome</title>
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+</head>
+
+
+<body class="bgSet">
+	<a href="/logout" style="float: right; margin: 10px"><button class="btn btn-primary">Logout</button></a>
+  <a href="/welcomeH" style="float: right; margin: 10px"><button class="btn btn-primary">Home</button></a>
+  <br>
+
+  <div class="displayNotice" style="text-align:center">
+		<center>
+			<table width="65%" align="center;" style="margin: 0px auto;">
+				<tr>
+					<td><b>Referenece</b></td>
+			    <td><b>Date</b></td>
+			    <td><b>Sender</b></td>
+					<td><b>Receiver</b></td>
+					<td><b>Title</b></td>
+          <td><b>Body</b></td>
+          <td><b>Status</b></td>
+				<tr>
+				<br>
+				{% for item in data %}
+				<tr>
+					<td>{{item[0]}}</td>
+			    <td>{{item[1]}}</td>
+			    <td>{{item[2]}}</td>
+					<td>{{item[3]}}</td>
+					<td>{{item[4]}}</td>
+          <td>{{item[5]}}</td>
+          <td>{{item[6]}}</td>
+					<td><button class="btn btn-success" id={{item[0]}} onclick='javascript: approve({{item[0]}})'><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+				<tr>
+				{% endfor %}
+			</table>
+		</center>
+	</div>
+
+<script>
+  function approve(ref){
+    var request = new XMLHttpRequest();
+    var id = ref;
+    // alert(ref)
+    request.open("GET", "/approveRecord/"+id);
+    request.send();
+  }
+</script>
+
+</body>
+</html>
