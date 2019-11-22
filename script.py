@@ -255,6 +255,37 @@ def registerUser(uid, email, phone):
 	except sqlite3.Error as error:
 		return error.message
 
+# President Flat Owner Info
+@app.route('/displayFlatOwner')
+def displayFlatOwner():
+	print("Not functional")
+	return render_template('President.html')
+
+@app.route('/approveProfile')
+def approveProfile():
+	return render_template('newProfile.html')
+
+@app.route('/Profile', methods=['POST'])
+def Profile():
+	conn = sqlite3.connect('data/data.db')
+	cur = conn.cursor()
+	apt1 = request.form['apt1']
+	apt2 = request.form['apt2']
+	apt3 = request.form['apt3']
+	apt4 = request.form['apt4']
+	apt5 = request.form['apt5']
+	aptNo = apt1+"-"+apt2+"-"+apt3+"-"+apt4+"/"+apt5
+	bedroom = request.form['bedroom']
+	bathroom = request.form['bathroom']
+	carp_area = request.form['carp_area']
+	built_area = request.form['built_area']
+	registered=0;
+	conn.execute("INSERT INTO apartments (aptNo, registered, bedrooms, bathrooms, area, parking_area) VALUES ('"+aptNo+"', 0, '"+bedroom+"', '"+bathroom+"', '"+carp_area+"', '"+built_area+"')")
+	conn.commit()
+	conn.close()
+	return redirect(url_for("approveProfile"))
+
+
 # Secreatry Notice start
 @app.route('/createNotice')
 def createNotice():
