@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome</title>
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+</head>
+
+<!-- NEED TO ADD DELETE PROFILE FUNCTIONALITY HERE -->
+<body class="bgSet">
+	<a href="/logout" style="float: right; margin: 10px"><button class="btn btn-primary">Logout</button></a>
+  <a href="/welcomeH" style="float: right; margin: 10px"><button class="btn btn-primary">Home</button></a>
+  <br><br><br>
+
+  <div class="container-fluid" style="text-align:center">
+		<div class="row">
+      <div class="col-md-9">
+        <div class="row roundCorner" style="background-color: var(--lightGrey); padding: 10px">
+          <div class="col">
+						<center>
+							<table width="85%" align="center;" style="margin: 0px auto;text-align:center;">
+                <tr>
+                  <td><strong>Apartment number</strong></td>
+                  <td><strong>Bedroom count</strong></td>
+                  <td><strong>Bathroom count</strong></td>
+                  <td><strong>Area</strong></td>
+                  <td><strong>parking slots</strong></td>
+                </tr>
+                {% for row in data %}
+                <tr height=30>
+                  <td>{{row[0]}}</td>
+                  <td>{{row[3]}}</td>
+                  <td>{{row[4]}}</td>
+                  <td>{{row[5]}}</td>
+                  <td>{{row[6]}}</td>
+                  <td><button class="btn btn-success" id='{{row[0]}}' onclick='javascript: approveit("{{row[0]}}  ")'><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+                </tr>
+                {% endfor %}
+              </table>
+            </center>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<script>
+  function approveit(id){
+    var request = new XMLHttpRequest();
+    var arr = id.split(/[\\\/]/);
+    pre=arr[0];
+    post=arr[1];
+    request.open("GET", "/approveUser2/"+pre+"/"+post);
+    request.send();
+  }
+</script>
+
+</body>
+</html>

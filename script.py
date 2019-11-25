@@ -277,6 +277,25 @@ def displayFlatOwner():
 
 @app.route('/approveProfile')
 def approveProfile():
+	conn = sqlite3.connect('data/data.db')
+	cur = conn.cursor()
+	# CHANGE WHERE APROVED IS 0
+	cur.execute("SELECT * from apartments;")
+	data = cur.fetchall()
+	return render_template('approve.html', data=data)
+
+@app.route('/approveUser2/<pre>/<post>')
+def approveUser2(pre, post):
+	conn = sqlite3.connect('data/data.db')
+	cur = conn.cursor()
+	id = pre+"/"+post
+	cur.execute("UPDATE apartments SET approved='1' where aptNo='"+id+"' ; " )
+	conn.commit()
+	conn.close()
+	return redirect(url_for('approveProfile'))
+
+@app.route('/createProfile2')
+def createProfile2():
 	return render_template('newProfile.html')
 
 @app.route('/Profile', methods=['POST'])
@@ -335,6 +354,138 @@ def deleteNotice(id):
 	conn.close()
 	return redirect(url_for("createNotice"))
 # Secretary Notice end
+
+# TREASUERER START
+
+@app.route('/regularPayment')
+def regularPayment():
+	conn = sqlite3.connect('data/data.db')
+	cur = conn.cursor()
+	cur.execute("SELECT * from electricity;")
+	row = cur.fetchone()
+	months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+	today = datetime.today()
+	present = months[today.month]
+
+	if(row==None):
+		electricity = "You have not made any payment."
+		# electricity = cur.fetchall()
+	else:
+		monthname = months[(row[5]-1)%12]
+		electricity = "Last paid in the month of "+ str(monthname)+""
+
+	cur.execute("SELECT * from water;")
+	row = cur.fetchone()
+	if(row==None):
+		water = "You have not made any payment."
+		# electricity = cur.fetchall()
+	else:
+		# months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+		monthname = months[(row[5]-1)%12]
+		water = "Last paid in the month of "+ str(monthname)+""
+
+	cur.execute("SELECT * from lift;")
+	row = cur.fetchone()
+	if(row==None):
+		lift = "You have not made any payment."
+		# electricity = cur.fetchall()
+	else:
+		issue = row[4]
+		newdate=str(int(issue[0:4])+1)+" "+issue[4:]
+		lift = "Valid upto "+newdate
+
+	return render_template('regularPayment.html', electricity=electricity, water=water, present=present, lift=lift)
+
+@app.route('/makeElectrictyPayment/<c_no>')
+def makeElectrictyPayment(c_no):
+	conn = sqlite3.connect('data/data.db')
+	cur = conn.cursor()
+	c_no=str(c_no)
+	today1 = str(date.today())
+	today = datetime.today()
+	year = today.year
+	month = today.month
+	monthNum = str((year - 1970) * 12 + month)
+	cur.execute("INSERT INTO electricity (c_no, c_date, month, amount) VALUES ('"+c_no+"', '"+today1+"', '"+monthNum+"', '"+str(10000)+"' ) ");
+	conn.commit()
+	conn.close()
+	return redirect(url_for("regularPayment"))
+
+@app.route('/makeWaterPayment/<c_no>')
+def makeWaterPayment(c_no):
+	conn = sqlite3.connect('data/data.db')
+	cur = conn.cursor()
+	c_no=str(c_no)
+	today1 = str(date.today())
+	today = datetime.today()
+	year = today.year
+	month = today.month
+	monthNum = str((year - 1970) * 12 + month)
+	cur.execute("INSERT INTO water (c_no, c_date, month, amount) VALUES ('"+c_no+"', '"+today1+"', '"+monthNum+"', '"+str(10000)+"' ) ");
+	conn.commit()
+	conn.close()
+	return redirect(url_for("regularPayment"))
+
+@app.route('/makeLiftPayment/<c_no>/<company>/<duration>')
+def makeLiftPayment(c_no, company, duration):
+	conn = sqlite3.connect('data/data.db')
+	cur = conn.cursor()
+	c_no=str(c_no)
+	today1 = str(date.today())
+	today = datetime.today()
+	year = today.year
+	month = today.month
+	monthNum = str((year - 1970) * 12 + month)
+	cur.execute("INSERT INTO lift (company, c_no, date, duration, amount) VALUES ( '"+company+"'  ,'"+c_no+"', '"+today1+"', '"+duration+"', '"+str(50000)+"' ) ");
+	conn.commit()
+	conn.close()
+	return redirect(url_for("regularPayment"))
+
+# @app.route('/payment')
+# def payment():
+# 	if 'user' in session:
+# 		uid = session['user']
+# 	else:
+# 		return redirect(url_for('login'))
+#
+# 	today = datetime.today()
+# 	year = today.year
+# 	month = today.month
+# 	monthNum = (year - 1970) * 12 + month
+#
+# 	conn = sqlite3.connect('data/data.db')
+#
+# 	cursor = conn.execute("SELECT * FROM apartments WHERE aptNo='"+uid+"'")
+#
+# 	cursor = cursor.fetchall()
+#
+# 	regMonth = cursor[0][1]
+#
+# 	maintAmt = cursor[0][5] * 5 + cursor[0][6] * 100
+#
+# 	cursor = conn.execute("SELECT * FROM Maint_"+uid.replace("-", "_").replace("/", "_"))
+#
+# 	cursor = cursor.fetchall()
+#
+# 	if len(cursor) != 0:
+# 		lastMonth = cursor[-1][0]
+# 	else:
+# 		lastMonth = regMonth - 1
+#
+# 	toPay = monthNum - lastMonth
+#
+# 	if toPay > 0:
+# 		payDet = "You need to <strong>pay</strong> maintenance for <strong>" + str(toPay) + " months</strong>."
+# 	elif toPay == 0:
+# 		payDet = "Your maintenance payment is <strong>settled up!</strong>"
+# 	else:
+# 		payDet = "You have paid maintenance for <strong>" + str(-1 * toPay) + " months</strong> in <strong>advance</strong>."
+#
+# 	return render_template('payment.html', user = uid, payDet = payDet, maintAmt = maintAmt)
+
+
+# TREASURER END
+
 
 #User Notice Display
 @app.route('/showNotice')

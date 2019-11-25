@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome</title>
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<style>
+
+</style>
+
+
+</head>
+
+
+<body class="bgSet">
+	<a href="/logout" style="float: right; margin: 10px"><button class="btn btn-primary">Logout</button></a>
+  <a href="/welcomeH" style="float: right; margin: 10px"><button class="btn btn-primary">Home</button></a>
+  <br>
+
+  <!-- <center>
+    <div style="background-color: var(--lightGrey); max-width: 500px; border-radius: 15px; padding: 20px;">
+      <br><br>
+			<font style="font-size: 20px"><strong>Maintenance Payment</strong></font><br><br>
+      <label for="category" style="text-align:center;">Category</label><br>
+      <select id="category" name="category">
+        <option value="electrical">Electrical</option>
+        <option value="water">Water</option>
+        <option value="generator">Generator</option>
+        <option value="contingen108 cy">Contingency</option>
+        <option value="fire">Fire Insuarance</option>
+        <option value="lift">Lift Maintainace</option>
+        <option value="electrical_inspection">Electrical Inspection</option>
+        <option value="generator_amc">Generator-AMC</option>
+      </select>
+      <br><br>
+			<br><br>
+    </div>
+  </center> -->
+  <center>
+    <br><br><br>
+    <div style="background-color: var(--lightGrey); max-width: 300px; border-radius: 15px; padding: 20px;">
+      <br><br>
+      <font style="font-size: 12px"><strong>Electricity Maintenance Payment</strong></font><br><br>
+      <h6>{{ electricity | safe}}</h6>
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#makeElectricityPaymentModal">Make Payment</button>
+      <br><br>
+      <br><br>
+    </div>
+    <br><br>
+    <div style="background-color: var(--lightGrey); max-width: 300px; border-radius: 15px; padding: 20px;">
+      <br><br>
+      <font style="font-size: 12px"><strong>Water Maintenance Payment</strong></font><br><br>
+      <h6>{{ water | safe}}</h6>
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#makeWaterPaymentModal">Make Payment</button>
+      <br><br>
+      <br><br>
+    </div>
+    <br><br>
+    <div style="background-color: var(--lightGrey); max-width: 300px; border-radius: 15px; padding: 20px;">
+      <br><br>
+      <font style="font-size: 12px"><strong>Lift Maintainance Charges</strong></font><br><br>
+      <h6>{{ lift | safe}}</h6>
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#makeLiftPaymentModal">Make Payment</button>
+      <br><br>
+      <br><br>
+    </div>
+  </center>
+
+
+  <!-- MODALS -->
+  <div class="modal fade" id="makeElectricityPaymentModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body" id="makePaymentModalHead">
+            <button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+            <center><font style="display: block;"><strong>Make Payment</strong></font></center>
+          </div>
+          <div class="modal-body" style="max-height: 450px; overflow: scroll;" id="makePaymentModalBody">
+            <center>
+              <h6>Payment for the month of {{ present | safe}}</h6>
+              <label for="cheqno" style="text-align:center;">Cheque Number</label><br>
+              <input id="echeqno" name="echeqno" placeholder="98765"></input>
+              <br><br>
+              <button class="btn btn-info" id="payBtn" onclick="makeElectrictyPayment()">Pay Rs. 10,000/-</button>
+            </center>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="makeWaterPaymentModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="makePaymentModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>Make Payment</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="makePaymentModalBody">
+	    			<center>
+	    				<h6>Payment for the month of {{ present | safe}}</h6>
+              <label for="cheqno" style="text-align:center;">Cheque Number</label><br>
+              <input id="wcheqno" name="wcheqno" placeholder="98765"></input>
+	    				<br><br>
+	    				<button class="btn btn-info" id="payBtn" onclick="makeWaterPayment()">Pay Rs. 10,000/-</button>
+	    			</center>
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+  <div class="modal fade" id="makeLiftPaymentModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="makePaymentModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>Make Payment</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="makePaymentModalBody">
+	    			<center>
+	    				<h6>{{ lift | safe}}</h6>
+              <label for="cheqno" style="text-align:center;">Cheque Number</label><br>
+              <input id="lcheqno" name="lcheqno" placeholder="98765"></input><br>
+              <label for="company" style="text-align:center;">Company</label><br>
+              <input id="company" name="company" placeholder="98765"></input><br>
+              <label for="duration" style="text-align:center;">Duration</label><br>
+              <input id="duration" name="duration" placeholder="In Years"></input>
+	    				<br><br>
+	    				<button class="btn btn-info" id="payBtn" onclick="makeLiftPayment()">Pay Rs. 50,000/-</button>
+	    			</center>
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+
+<script>
+
+function makeElectrictyPayment(c_no){
+
+  // var request = new XMLHttpRequest();
+  //
+  // request.onload = function(){
+  //   if (request.responseText != "failure"){
+  //     alert("Payment successful!\nTransaction id: " + request.responseText)
+  //     location.reload();
+  //   }
+  //   else{
+  //     alert(request.responseText)
+  //   }
+  //   document.getElementById('payBtn').disabled = false;
+  //
+  //
+  // };
+  // document.getElementById('payBtn').disabled = true;
+  //
+  // request.open("GET", "/makePayment/"+monthsCtr, true);
+  //   request.send();
+  var c_no = document.getElementById('echeqno').value;
+  var request = new XMLHttpRequest();
+  request.open("GET", "/makeElectrictyPayment/"+c_no, true);
+  request.send();
+}
+
+function makeWaterPayment(){
+  var c_no = document.getElementById('wcheqno').value;
+  var request = new XMLHttpRequest();
+  request.open("GET", "/makeWaterPayment/"+c_no, true);
+  request.send();
+}
+
+function makeLiftPayment(){
+  var c_no = document.getElementById('lcheqno').value;
+  var company = document.getElementById('company').value;
+  var duration = document.getElementById('duration').value;
+  var request = new XMLHttpRequest();
+  request.open("GET", "/makeLiftPayment/"+c_no+"/"+company+"/"+duration, true);
+  request.send();
+  // alert("Lift")
+}
+
+</script>
+
+
+</body>
+</html>
