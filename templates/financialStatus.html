@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>View Income & Expenditure</title>
+	<title>Financial Status</title>
 
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
@@ -21,19 +21,19 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-sm-6">
-						<font size="4"><strong>Income this month</strong></font>
+						<font size="4"><strong>Total Income</strong></font>
 						<br><br>
 						{{ income|safe }}
 					</div>
 					<div class="col-sm-6">
-						<font size="4"><strong>Expenses this month</strong></font>
+						<font size="4"><strong>Total Expense</strong></font>
 						<br><br>
 						{{ expense|safe }}
 					</div>
 				</div>
 			</div>
 			<br>
-			{{ monthNet|safe }}
+			{{ finStat|safe }}
 			<br><br>
 		</div>
 	</center>

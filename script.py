@@ -1615,7 +1615,6 @@ def viewIncomeExpenditure():
 	incTot = 0
 
 	for row in cursor:
-		print(row)
 		income += "<tr>\n<td><center>"+str(row[0])+"</center></td>\n<td><center>&#8377; "+str(row[1])+"</center></td>\n</tr>\n"
 		incTot += row[1]
 
@@ -1628,7 +1627,6 @@ def viewIncomeExpenditure():
 	expTot = 0
 
 	for row in cursor:
-		print(row)
 		expense += "<tr>\n<td><center>"+str(row[0])+"</center></td>\n<td><center>&#8377; "+str(row[1])+"</center></td>\n</tr>\n"
 		expTot += row[1]
 
@@ -1639,8 +1637,151 @@ def viewIncomeExpenditure():
 	return render_template('incExp.html', income = income, expense = expense, monthNet = monthNet)
 
 
+@app.route('/financialStatus')
+def financialStatus():
+
+	conn = sqlite3.connect('data/data.db')
+
+	cursor = conn.execute("SELECT type, SUM(amount) FROM income GROUP BY type")
+
+	income = "<table width='300px' cellpadding='5'>\n<tr>\n<th><center>Type</center></th>\n<th><center>Amount</center></th>\n</tr>\n"
+	incTot = 0
+
+	for row in cursor:
+		income += "<tr>\n<td><center>"+str(row[0])+"</center></td>\n<td><center>&#8377; "+str(row[1])+"</center></td>\n</tr>\n"
+		incTot += row[1]
+
+	income += "<tr>\n<th><center>Total</center></th>\n<th><center>&#8377; "+str(incTot)+"</center></th>\n</tr>\n</table>"
 
 
+	cursor = conn.execute("SELECT category, SUM(amount) FROM expense GROUP BY category")
+
+	expense = "<table width='300px' cellpadding='5'>\n<tr>\n<th><center>Category</center></th>\n<th><center>Amount</center></th>\n</tr>\n"
+	expTot = 0
+
+	for row in cursor:
+		expense += "<tr>\n<td><center>"+str(row[0])+"</center></td>\n<td><center>&#8377; "+str(row[1])+"</center></td>\n</tr>\n"
+		expTot += row[1]
+
+	expense += "<tr>\n<th><center>Total</center></th>\n<th><center>&#8377; "+str(expTot)+"</center></th>\n</tr>\n</table>"
+
+	finStat = "<strong>Net balance amount: &#8377; "+str(incTot - expTot)+"</strong>"
+
+	return render_template('financialStatus.html', income = income, expense = expense, finStat = finStat)
+
+
+@app.route('/viewMaintenance')
+def viewMaintenance():
+
+	conn = sqlite3.connect('data/data.db')
+
+	cursor = conn.execute("SELECT COUNT(user_id) FROM users")
+
+	cursor = cursor.fetchall()
+
+	totApts = cursor[0][0]
+
+	today = datetime.today()
+	year = today.year
+	month = today.month
+	monthNum = (year - 1970) * 12 + month
+
+	maintDets = "<table width='500px' cellpadding='5'>\n<tr>\n<th><center>Apartment</center></th>\n<th><center>Status</center></th>\n</tr>\n"
+
+	cursor = conn.execute("SELECT user_id FROM users")
+
+	totPaid = 0
+
+	for row in cursor:
+
+		aptNo = row[0]
+
+		maintDets += "<tr>\n<td><center>"+aptNo+"</center></td>\n"
+
+		cursor2 = conn.execute("SELECT * FROM apartments WHERE aptNo='"+aptNo+"'")
+
+		cursor2 = cursor2.fetchall()
+
+		regMonth = cursor2[0][1]
+
+		maintAmt = cursor2[0][5] * 5 + cursor2[0][6] * 100
+
+		cursor2 = conn.execute("SELECT * FROM Maint_"+aptNo.replace("-", "_").replace("/", "_"))
+
+		cursor2 = cursor2.fetchall()
+
+		if len(cursor2) != 0:
+			lastMonth = cursor2[-1][0]
+		else:
+			lastMonth = regMonth - 1
+
+		toPay = monthNum - lastMonth
+
+		paid = toPay * maintAmt * -1
+
+		totPaid += paid
+
+		if toPay > 0:
+			maintDets += "<td style='color: red'><center>Dues: " + str(toPay) + " months (&#8377; "+str(paid)+"/-)</center></td>\n"
+		elif toPay == 0:
+			maintDets += "<td style='color: blue'><center>Settled up</center></td>\n"
+		else:
+			maintDets += "<td style='color: green'><center>Advance payment: " + str(-1 * toPay) + " months (&#8377; "+str(paid)+"/-)</center></td>\n"
+
+		maintDets += "</tr>\n"
+
+	maintDets += "</table>\n<br><br>\n"
+
+	if totPaid < 0:
+		maintDets += "<strong style='color: red'>Total: &#8377; "+str(totPaid)+"/-</strong>"
+	elif totPaid == 0:
+		maintDets += "<strong style='color: blue'>Total: &#8377; "+str(totPaid)+"/-</strong>"
+	else:
+		maintDets += "<strong style='color: green'>Total: &#8377; "+str(totPaid)+"/-</strong>"
+
+	return render_template('viewMaintenance.html', totApts = totApts, maintDets = maintDets)
+
+# @app.route('/payment')
+# def payment():
+# 	if 'user' in session:
+# 		uid = session['user']
+# 	else:
+# 		return redirect(url_for('login'))
+
+# 	today = datetime.today()
+# 	year = today.year
+# 	month = today.month
+# 	monthNum = (year - 1970) * 12 + month
+
+# 	conn = sqlite3.connect('data/data.db')
+
+# 	cursor = conn.execute("SELECT * FROM apartments WHERE aptNo='"+uid+"'")
+
+# 	cursor = cursor.fetchall()
+
+# 	regMonth = cursor[0][1]
+
+# 	maintAmt = cursor[0][5] * 5 + cursor[0][6] * 100
+
+# 	cursor = conn.execute("SELECT * FROM Maint_"+uid.replace("-", "_").replace("/", "_"))
+
+# 	cursor = cursor.fetchall()
+
+# 	if len(cursor) != 0:
+# 		lastMonth = cursor[-1][0]
+# 	else:
+# 		lastMonth = regMonth - 1
+
+# 	toPay = monthNum - lastMonth
+
+# 	if toPay > 0:
+# 		payDet = "You need to <strong>pay</strong> maintenance for <strong>" + str(toPay) + " months</strong>."
+# 	elif toPay == 0:
+# 		payDet = "Your maintenance payment is <strong>settled up!</strong>"
+# 	else:
+# 		payDet = "You have paid maintenance for <strong>" + str(-1 * toPay) + " months</strong> in <strong>advance</strong>."
+
+# 	return render_template('payment.html', user = uid, payDet = payDet, maintAmt = maintAmt)
 
 
 if (__name__ == "__main__"):
