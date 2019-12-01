@@ -105,9 +105,9 @@
 		<br>
 		<button type="button" class="btn btn-warning">Dues and Payments</button>
 		<a href="/payment"><button type="button" class="btn btn-warning">Pay Maintainace</button></a>
-		<button type="button" class="btn btn-warning">View Income Expenditure</button>
-		<button type="button" class="btn btn-warning" onclick="complaint()">Complaint</button>
-		<button type="button" class="btn btn-warning" onclick="showNotice()">Notices</button>
+		<a href="/viewIncomeExpenditure"><button type="button" class="btn btn-warning">View Income Expenditure</button></a>
+		<a href="/complaint_page"><button type="button" class="btn btn-warning">Complaint</button></a>
+		<a href="/showNotice"><button type="button" class="btn btn-warning">Notices</button></a>
 
 
 
@@ -116,16 +116,8 @@
 
 <script>
 
-	function showNotice(){
-		window.location.href='/showNotice';
-	}
-
 	function pay(){
 		window.location.href='/payMaintainance';
-	}
-
-	function complaint(){
-		window.location.href='/complaint_page/';
 	}
 
 	function saveEdit(){

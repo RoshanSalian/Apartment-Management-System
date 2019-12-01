@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Welcome</title>
+	<title>Regular Payment</title>
 
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
@@ -14,9 +14,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
-<style>
-
-</style>
 
 
 </head>
@@ -24,21 +21,106 @@
 
 <body class="bgSet">
 	<a href="/logout" style="float: right; margin: 10px"><button class="btn btn-primary">Logout</button></a>
-  <a href="/welcomeH" style="float: right; margin: 10px"><button class="btn btn-primary">Home</button></a>
-  <br>
+	<a href="/welcomeH" style="float: right; margin: 10px"><button class="btn btn-primary">Home</button></a>
+	<br>
+
+
+	<br><br><br><br>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-4" style="border-radius: 10px">
+
+				<div style="background-color: white; border-radius: 15px">
+
+					<br>
+
+					<center>
+						<font style="font-size: 20px"><strong>Maintenance Payment</strong></font><br><br>
+						
+						<label for="category" style="text-align:center;">Category</label><br>
+						
+						<select id="category" name="category" onchange="selectChanged()">
+							<option value="selOpt">[Select Category]</option>
+							<option value="Contingency">Contingency</option>
+							<option value="Electrical">Electrical</option>
+							<option value="Electrical Inspection">Electrical Inspection</option>
+							<option value="Fire Insurance">Fire Insurance</option>
+							<option value="Generator">Generator</option>
+							<option value="Lift Maintenance">Lift Maintenance</option>
+							<option value="Water">Water</option>
+						</select>
+					
+					</center>
+
+					<br><br>
+				</div>
+
+			</div>
+
+			<div class="col-sm-4">
+				<div style="background-color: var(--lightGrey); border-radius: 15px">
+					<br><br>
+					<center>
+						<font size="3"><strong>Payment to be made to:</strong></font>
+						<br>
+						<font id="payWhom">(Select category first)</font>
+						<br><br><br>
+					</center>
+				</div>
+			</div>
+
+			<div class="col-sm-4">
+				<div style="background-color: var(--lightGrey); border-radius: 15px">
+					<br><br>
+					<center>
+						<font size="3"><strong>Amount to be paid:</strong></font>
+						<br>
+						&#8377; &nbsp;
+						<input type="text" id="payHowMuch" disabled onkeyup="amountChanged()">
+						<br><br><br>
+
+						<button class="btn btn-primary" id="payBtn" disabled onclick="setConfText()" data-toggle="modal" data-target="#makePaymentModal">Pay &#8377; 0/-</button>
+
+						<br><br>
+					</center>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="makePaymentModal">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<div class="modal-body" id="makePaymentModalHead">
+	    			<button type="button" class="close zoom" data-dismiss="modal">&times;</button>
+	    			<center><font style="display: block;"><strong>Make Payment</strong></font></center>
+	    		</div>
+	    		<div class="modal-body" style="max-height: 450px; overflow: scroll;" id="makePaymentModalBody">
+	    			<center>
+	    				<font size="3" id="payConfText"></font>
+	    				<br><br>
+	    				<button class="btn btn-primary" id="payConf" onclick="makePayment()"></button>
+	    			</center>
+	    		</div>
+		    </div>
+		</div>
+	</div>
+
+
 
   <!-- <center>
     <div style="background-color: var(--lightGrey); max-width: 500px; border-radius: 15px; padding: 20px;">
       <br><br>
-			<font style="font-size: 20px"><strong>Maintenance Payment</strong></font><br><br>
+	<font style="font-size: 20px"><strong>Maintenance Payment</strong></font><br><br>
       <label for="category" style="text-align:center;">Category</label><br>
       <select id="category" name="category">
         <option value="electrical">Electrical</option>
         <option value="water">Water</option>
         <option value="generator">Generator</option>
         <option value="contingen108 cy">Contingency</option>
-        <option value="fire">Fire Insuarance</option>
-        <option value="lift">Lift Maintainace</option>
+        <option value="fire">Fire Insurance</option>
+        <option value="lift">Lift Maintenance</option>
         <option value="electrical_inspection">Electrical Inspection</option>
         <option value="generator_amc">Generator-AMC</option>
       </select>
@@ -46,7 +128,7 @@
 			<br><br>
     </div>
   </center> -->
-  <center>
+  <!-- <center>
     <br><br><br>
     <div style="background-color: var(--lightGrey); max-width: 300px; border-radius: 15px; padding: 20px;">
       <br><br>
@@ -68,17 +150,17 @@
     <br><br>
     <div style="background-color: var(--lightGrey); max-width: 300px; border-radius: 15px; padding: 20px;">
       <br><br>
-      <font style="font-size: 12px"><strong>Lift Maintainance Charges</strong></font><br><br>
+      <font style="font-size: 12px"><strong>Lift Maintenance Charges</strong></font><br><br>
       <h6>{{ lift | safe}}</h6>
       <button type="button" class="btn btn-info" data-toggle="modal" data-target="#makeLiftPaymentModal">Make Payment</button>
       <br><br>
       <br><br>
     </div>
-  </center>
+  </center> -->
 
 
   <!-- MODALS -->
-  <div class="modal fade" id="makeElectricityPaymentModal">
+  <!-- <div class="modal fade" id="makeElectricityPaymentModal">
     <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body" id="makePaymentModalHead">
@@ -140,12 +222,139 @@
 	    		</div>
 		    </div>
 		</div>
-	</div>
+	</div> -->
 
 
 <script>
 
-function makeElectrictyPayment(c_no){
+	function setInputFilter(textbox, inputFilter) {
+	  	["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+	    	textbox.addEventListener(event, function() {
+	      		if (inputFilter(this.value)) {
+			        this.oldValue = this.value;
+			        this.oldSelectionStart = this.selectionStart;
+			        this.oldSelectionEnd = this.selectionEnd;
+		      	} else if (this.hasOwnProperty("oldValue")) {
+			        this.value = this.oldValue;
+			        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+	      		}
+	    	});
+	  	});
+	}
+
+	setInputFilter(document.getElementById("payHowMuch"), function(value) {
+	  	return /^[0-9]*$/.test(value);
+	});
+
+	function selectChanged(){
+
+		select = document.getElementById("category");
+		payWhom = document.getElementById("payWhom");
+		payHowMuch = document.getElementById("payHowMuch");
+		payBtn = document.getElementById("payBtn");
+
+		category = select.value;
+
+		payHowMuch.value = "";
+
+		payBtn.innerText = "Pay \u20B9 0/-";
+		payBtn.disabled = true;
+
+		if (category == "selOpt"){
+			payWhom.innerText = "(Select category first)";
+			payHowMuch.disabled = true;
+		}
+		else if(category == "Electrical"){
+			payWhom.innerText = "MESCOM";
+			payHowMuch.disabled = false;
+		}
+		else if (category == "Water"){
+			payWhom.innerText = "Municipal Corporation";
+			payHowMuch.disabled = false;
+		}
+		else if (category == "Generator"){
+			payWhom.innerText = "MangElecGen";
+			payHowMuch.disabled = false;
+		}
+		else if (category == "Contingency"){
+			payWhom.innerText = "Contingency Solns";
+			payHowMuch.disabled = false;
+		}
+		else if (category == "Fire Insurance"){
+			payWhom.innerText = "Oriental Insurance";
+			payHowMuch.disabled = false;
+		}
+		else if (category == "Lift Maintenance"){
+			payWhom.innerText = "Axis Lift Co.";
+			payHowMuch.disabled = false;
+		}
+		else if (category == "Electrical Inspection"){
+			payWhom.innerText = "MESCOM Inspec";
+			payHowMuch.disabled = false;
+		}
+
+	}
+
+	function amountChanged(){
+		amount = document.getElementById("payHowMuch").value;
+		if (amount == ""){
+			amount = "0";
+			payBtn.disabled = true;
+		}
+		else
+			payBtn.disabled = false;
+		payBtn.innerText = "Pay \u20B9 " + amount + "/-";
+	}
+
+	function setConfText(){
+		payConfText = document.getElementById("payConfText");
+		payConf = document.getElementById("payConf");
+		company = document.getElementById("payWhom").innerText;
+		amount = document.getElementById("payHowMuch").value;
+
+		payConfText.innerHTML = "Are you sure you want to pay <strong> \u20B9 "+amount+"/- </strong> to <strong>"+company+"</strong>?"
+		payConf.innerText = "Pay \u20B9 "+amount+"/-"
+	}
+
+	function makePayment(){
+
+		category = document.getElementById("category").value;
+		company = document.getElementById("payWhom").innerText;
+		amount = document.getElementById("payHowMuch").value;
+
+		var request = new XMLHttpRequest();
+
+		request.onload = function(){
+			if (request.responseText != "failure"){
+				alert("Payment successful!\nTransaction id: " + request.responseText)
+				document.getElementById("category").selectedIndex = "0";
+				document.getElementById("payWhom").innerText = "(Select category first)";
+				document.getElementById("payHowMuch").value = "";
+				document.getElementById("payHowMuch").disabled = true;
+				document.getElementById("payBtn").innerText = "Pay \u20B9 0/-";
+				document.getElementById("payBtn").disabled = true;
+				$('#makePaymentModal').modal('hide');
+
+			}
+			else{
+				alert(request.responseText)
+			}
+			document.getElementById('payConf').disabled = false;
+
+
+		};
+		document.getElementById('payConf').disabled = true;
+
+		category = encodeURIComponent(encodeURIComponent(category))
+		company = encodeURIComponent(encodeURIComponent(company))
+		amount = encodeURIComponent(encodeURIComponent(amount))
+
+		request.open("GET", "/makeRegularPayment/"+category+"/"+company+"/"+amount, true);
+    	request.send();
+
+	}
+
+// function makeElectrictyPayment(c_no){
 
   // var request = new XMLHttpRequest();
   //
@@ -165,28 +374,28 @@ function makeElectrictyPayment(c_no){
   //
   // request.open("GET", "/makePayment/"+monthsCtr, true);
   //   request.send();
-  var c_no = document.getElementById('echeqno').value;
-  var request = new XMLHttpRequest();
-  request.open("GET", "/makeElectrictyPayment/"+c_no, true);
-  request.send();
-}
+//   var c_no = document.getElementById('echeqno').value;
+//   var request = new XMLHttpRequest();
+//   request.open("GET", "/makeElectrictyPayment/"+c_no, true);
+//   request.send();
+// }
 
-function makeWaterPayment(){
-  var c_no = document.getElementById('wcheqno').value;
-  var request = new XMLHttpRequest();
-  request.open("GET", "/makeWaterPayment/"+c_no, true);
-  request.send();
-}
+// function makeWaterPayment(){
+//   var c_no = document.getElementById('wcheqno').value;
+//   var request = new XMLHttpRequest();
+//   request.open("GET", "/makeWaterPayment/"+c_no, true);
+//   request.send();
+// }
 
-function makeLiftPayment(){
-  var c_no = document.getElementById('lcheqno').value;
-  var company = document.getElementById('company').value;
-  var duration = document.getElementById('duration').value;
-  var request = new XMLHttpRequest();
-  request.open("GET", "/makeLiftPayment/"+c_no+"/"+company+"/"+duration, true);
-  request.send();
-  // alert("Lift")
-}
+// function makeLiftPayment(){
+//   var c_no = document.getElementById('lcheqno').value;
+//   var company = document.getElementById('company').value;
+//   var duration = document.getElementById('duration').value;
+//   var request = new XMLHttpRequest();
+//   request.open("GET", "/makeLiftPayment/"+c_no+"/"+company+"/"+duration, true);
+//   request.send();
+//   // alert("Lift")
+// }
 
 </script>
 

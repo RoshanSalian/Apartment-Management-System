@@ -1,17 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Treasurer</title>
+	<title>View Maintenance</title>
 
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
 
 </head>
 <body class="bgSet">
+
+	<br><br><br><br>
+
+	<center>
+		<div style="background-color: var(--lightGrey); max-width: 700px; border-radius: 15px">
+			<br>
+			<font style="font-size: 20px"><strong>Maintenance Payment Details</strong></font><br><br>
+
+			<font size="3"><strong>Total registered apartments: {{ totApts }}</strong></font>
+
+			<br><br>
+
+			{{ maintDets|safe }}
+
+			<br><br>
+
+		</div>
+
+	</center>
 
 </body>
 </html>

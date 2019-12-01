@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Welcome</title>
+	<title>Treasurer</title>
 
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
@@ -23,24 +23,17 @@
 	<br><br><br>
 
   <button type="button" class="btn btn-warning">responsibilty</button>
-  <button type="button" class="btn btn-warning">Income Expenditure statement</button>
-  <button type="button" class="btn btn-warning">Monthly Maintainace charges</button>
-  <button type="button" class="btn btn-warning">Financial Status</button>
+  <a href="/viewIncomeExpenditure"><button type="button" class="btn btn-warning">Income Expenditure statement</button></a>
+  <a href="/viewMaintenance"><button type="button" class="btn btn-warning">Monthly Maintainace charges</button></a>
+  <a href="/financialStatus"><button type="button" class="btn btn-warning">Financial Status</button></a>
   <button type="button" class="btn btn-warning">Dues</button>
-  <button type="button" class="btn btn-warning" onclick="showExpenseForm()">Other Expense</button>
+  <a href="/showExpenseForm"><button type="button" class="btn btn-warning">Other Expense</button></a>
   <button type="button" class="btn btn-warning">Balance sheets</button>
-	<button type="button" class="btn btn-warning">Employee Salary</button>
-  <button type="button" class="btn btn-warning" onclick="regularPayment()">Regular Payment</button>
+  <button type="button" class="btn btn-warning">Employee Salary</button>
+  <a href="/regularPayment"><button type="button" class="btn btn-warning">Regular Payment</button></a>
 
 	<script>
 
-		function regularPayment(){
-			window.location.href='/regularPayment';
-		}
-
-			function showExpenseForm(){
-				window.location.href='/showExpenseForm';
-			}
 	</script>
 
 
