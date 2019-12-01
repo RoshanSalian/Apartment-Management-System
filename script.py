@@ -359,87 +359,116 @@ def deleteNotice(id):
 
 @app.route('/regularPayment')
 def regularPayment():
-	conn = sqlite3.connect('data/data.db')
-	cur = conn.cursor()
-	cur.execute("SELECT * from electricity;")
-	row = cur.fetchone()
-	months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-	today = datetime.today()
-	present = months[today.month]
+	# conn = sqlite3.connect('data/data.db')
+	# cur = conn.cursor()
+	# cur.execute("SELECT * from electricity;")
+	# row = cur.fetchone()
+	# months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+	# today = datetime.today()
+	# present = months[today.month]
 
-	if(row==None):
-		electricity = "You have not made any payment."
-		# electricity = cur.fetchall()
-	else:
-		monthname = months[(row[5]-1)%12]
-		electricity = "Last paid in the month of "+ str(monthname)+""
+	# if(row==None):
+	# 	electricity = "You have not made any payment."
+	# 	# electricity = cur.fetchall()
+	# else:
+	# 	monthname = months[(row[5]-1)%12]
+	# 	electricity = "Last paid in the month of "+ str(monthname)+""
 
-	cur.execute("SELECT * from water;")
-	row = cur.fetchone()
-	if(row==None):
-		water = "You have not made any payment."
-		# electricity = cur.fetchall()
-	else:
-		# months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-		monthname = months[(row[5]-1)%12]
-		water = "Last paid in the month of "+ str(monthname)+""
+	# cur.execute("SELECT * from water;")
+	# row = cur.fetchone()
+	# if(row==None):
+	# 	water = "You have not made any payment."
+	# 	# electricity = cur.fetchall()
+	# else:
+	# 	# months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+	# 	monthname = months[(row[5]-1)%12]
+	# 	water = "Last paid in the month of "+ str(monthname)+""
 
-	cur.execute("SELECT * from lift;")
-	row = cur.fetchone()
-	if(row==None):
-		lift = "You have not made any payment."
-		# electricity = cur.fetchall()
-	else:
-		issue = row[4]
-		newdate=str(int(issue[0:4])+1)+" "+issue[4:]
-		lift = "Valid upto "+newdate
+	# cur.execute("SELECT * from lift;")
+	# row = cur.fetchone()
+	# if(row==None):
+	# 	lift = "You have not made any payment."
+	# 	# electricity = cur.fetchall()
+	# else:
+	# 	issue = row[4]
+	# 	newdate=str(int(issue[0:4])+1)+" "+issue[4:]
+	# 	lift = "Valid upto "+newdate
 
-	return render_template('regularPayment.html', electricity=electricity, water=water, present=present, lift=lift)
+	return render_template('regularPayment.html')#, electricity=electricity, water=water, present=present, lift=lift)
 
-@app.route('/makeElectrictyPayment/<c_no>')
-def makeElectrictyPayment(c_no):
-	conn = sqlite3.connect('data/data.db')
-	cur = conn.cursor()
-	c_no=str(c_no)
-	today1 = str(date.today())
-	today = datetime.today()
-	year = today.year
-	month = today.month
-	monthNum = str((year - 1970) * 12 + month)
-	cur.execute("INSERT INTO electricity (c_no, c_date, month, amount) VALUES ('"+c_no+"', '"+today1+"', '"+monthNum+"', '"+str(10000)+"' ) ");
-	conn.commit()
-	conn.close()
-	return redirect(url_for("regularPayment"))
+@app.route('/makeRegularPayment/<category>/<company>/<amount>')
+def makeRegularPayment(category, company, amount):
 
-@app.route('/makeWaterPayment/<c_no>')
-def makeWaterPayment(c_no):
-	conn = sqlite3.connect('data/data.db')
-	cur = conn.cursor()
-	c_no=str(c_no)
-	today1 = str(date.today())
-	today = datetime.today()
-	year = today.year
-	month = today.month
-	monthNum = str((year - 1970) * 12 + month)
-	cur.execute("INSERT INTO water (c_no, c_date, month, amount) VALUES ('"+c_no+"', '"+today1+"', '"+monthNum+"', '"+str(10000)+"' ) ");
-	conn.commit()
-	conn.close()
-	return redirect(url_for("regularPayment"))
+	category = decodeUrlText(category)
+	company = decodeUrlText(company)
+	amount = decodeUrlText(amount)
 
-@app.route('/makeLiftPayment/<c_no>/<company>/<duration>')
-def makeLiftPayment(c_no, company, duration):
-	conn = sqlite3.connect('data/data.db')
-	cur = conn.cursor()
-	c_no=str(c_no)
-	today1 = str(date.today())
-	today = datetime.today()
-	year = today.year
-	month = today.month
-	monthNum = str((year - 1970) * 12 + month)
-	cur.execute("INSERT INTO lift (company, c_no, date, duration, amount) VALUES ( '"+company+"'  ,'"+c_no+"', '"+today1+"', '"+duration+"', '"+str(50000)+"' ) ");
-	conn.commit()
-	conn.close()
-	return redirect(url_for("regularPayment"))
+	try:
+		tranLength = 10
+		tran_characters = string.ascii_letters + string.digits
+		tranNum = ''.join(random.choice(tran_characters) for i in range(tranLength))
+
+		today = datetime.today()
+		year = today.year
+		month = today.month
+		monthNum = (year - 1970) * 12 + month
+
+		conn = sqlite3.connect('data/data.db')
+		conn.execute("INSERT INTO expense (category, company, tran_num, amount, month) VALUES ('"+category+"', '"+company+"', '"+tranNum+"', "+amount+", "+str(monthNum)+")")
+		conn.commit()
+		conn.close()
+
+		return tranNum
+
+	except Exception as e:
+		print(e)
+		return "failure"
+
+
+# @app.route('/makeElectrictyPayment/<c_no>')
+# def makeElectrictyPayment(c_no):
+# 	conn = sqlite3.connect('data/data.db')
+# 	cur = conn.cursor()
+# 	c_no=str(c_no)
+# 	today1 = str(date.today())
+# 	today = datetime.today()
+# 	year = today.year
+# 	month = today.month
+# 	monthNum = str((year - 1970) * 12 + month)
+# 	cur.execute("INSERT INTO electricity (c_no, c_date, month, amount) VALUES ('"+c_no+"', '"+today1+"', '"+monthNum+"', '"+str(10000)+"' ) ");
+# 	conn.commit()
+# 	conn.close()
+# 	return redirect(url_for("regularPayment"))
+
+# @app.route('/makeWaterPayment/<c_no>')
+# def makeWaterPayment(c_no):
+# 	conn = sqlite3.connect('data/data.db')
+# 	cur = conn.cursor()
+# 	c_no=str(c_no)
+# 	today1 = str(date.today())
+# 	today = datetime.today()
+# 	year = today.year
+# 	month = today.month
+# 	monthNum = str((year - 1970) * 12 + month)
+# 	cur.execute("INSERT INTO water (c_no, c_date, month, amount) VALUES ('"+c_no+"', '"+today1+"', '"+monthNum+"', '"+str(10000)+"' ) ");
+# 	conn.commit()
+# 	conn.close()
+# 	return redirect(url_for("regularPayment"))
+
+# @app.route('/makeLiftPayment/<c_no>/<company>/<duration>')
+# def makeLiftPayment(c_no, company, duration):
+# 	conn = sqlite3.connect('data/data.db')
+# 	cur = conn.cursor()
+# 	c_no=str(c_no)
+# 	today1 = str(date.today())
+# 	today = datetime.today()
+# 	year = today.year
+# 	month = today.month
+# 	monthNum = str((year - 1970) * 12 + month)
+# 	cur.execute("INSERT INTO lift (company, c_no, date, duration, amount) VALUES ( '"+company+"'  ,'"+c_no+"', '"+today1+"', '"+duration+"', '"+str(50000)+"' ) ");
+# 	conn.commit()
+# 	conn.close()
+# 	return redirect(url_for("regularPayment"))
 
 # @app.route('/payment')
 # def payment():
@@ -677,10 +706,18 @@ def makePayment(months):
 		tran_characters = string.ascii_letters + string.digits
 		tranNum = ''.join(random.choice(tran_characters) for i in range(tranLength))
 
+		totPayment = months * maintAmt
+
+		today = datetime.today()
+		year = today.year
+		month = today.month
+		monthNum = (year - 1970) * 12 + month
+
 		for i in range(months):
 			lastMonth += 1
 
 			conn.execute("INSERT INTO Maint_"+uid.replace("-", "_").replace("/", "_") + " VALUES ("+str(lastMonth)+", '"+tranNum+"', "+str(maintAmt)+")")
+			conn.execute("INSERT INTO income (type, amount, user, month) VALUES ('Maintenance', " + str(totPayment) + ", '" + uid + "', " + str(monthNum) + ")")
 
 		conn.commit()
 		conn.close()
@@ -1560,9 +1597,51 @@ def removeTenant(tid):
 
 	return "success"
 
-@app.route('/treasurer')
-def treasurer():
-	return render_template('treasurer.html')
+
+
+@app.route('/viewIncomeExpenditure')
+def viewIncomeExpenditure():
+
+	today = datetime.today()
+	year = today.year
+	month = today.month
+	monthNum = (year - 1970) * 12 + month
+
+	conn = sqlite3.connect('data/data.db')
+
+	cursor = conn.execute("SELECT type, SUM(amount) FROM income WHERE month="+str(monthNum)+" GROUP BY type")
+
+	income = "<table width='300px' cellpadding='5'>\n<tr>\n<th><center>Type</center></th>\n<th><center>Amount</center></th>\n</tr>\n"
+	incTot = 0
+
+	for row in cursor:
+		print(row)
+		income += "<tr>\n<td><center>"+str(row[0])+"</center></td>\n<td><center>&#8377; "+str(row[1])+"</center></td>\n</tr>\n"
+		incTot += row[1]
+
+	income += "<tr>\n<th><center>Total</center></th>\n<th><center>&#8377; "+str(incTot)+"</center></th>\n</tr>\n</table>"
+
+
+	cursor = conn.execute("SELECT category, SUM(amount) FROM expense WHERE month="+str(monthNum)+" GROUP BY category")
+
+	expense = "<table width='300px' cellpadding='5'>\n<tr>\n<th><center>Category</center></th>\n<th><center>Amount</center></th>\n</tr>\n"
+	expTot = 0
+
+	for row in cursor:
+		print(row)
+		expense += "<tr>\n<td><center>"+str(row[0])+"</center></td>\n<td><center>&#8377; "+str(row[1])+"</center></td>\n</tr>\n"
+		expTot += row[1]
+
+	expense += "<tr>\n<th><center>Total</center></th>\n<th><center>&#8377; "+str(expTot)+"</center></th>\n</tr>\n</table>"
+
+	monthNet = "<strong>Net income this month: &#8377; "+str(incTot - expTot)+"</strong>"
+
+	return render_template('incExp.html', income = income, expense = expense, monthNet = monthNet)
+
+
+
+
+
 
 if (__name__ == "__main__"):
 	app.run(port = 5000)

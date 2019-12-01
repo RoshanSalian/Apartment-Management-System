@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>View Income & Expenditure</title>
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
+
+
+</head>
+<body class="bgSet">
+
+	<br><br><br><br><br>
+
+	<center>
+		<div style="background-color: var(--lightGrey); max-width: 1000px; border-radius: 15px">
+
+			<br>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-6">
+						<font size="4"><strong>Income this month</strong></font>
+						<br><br>
+						{{ income|safe }}
+					</div>
+					<div class="col-sm-6">
+						<font size="4"><strong>Expenses this month</strong></font>
+						<br><br>
+						{{ expense|safe }}
+					</div>
+				</div>
+			</div>
+			<br>
+			{{ monthNet|safe }}
+			<br><br>
+		</div>
+	</center>
+
+</body>
+</html>
