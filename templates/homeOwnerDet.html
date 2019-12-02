@@ -12,15 +12,17 @@
 
 </head>
 <body class="bgSet">
-
+	<a href="/logout" style="float: right; margin: 10px"><button class="btn btn-primary">Logout</button></a>
+	<a href="/welcomeH" style="float: right; margin: 10px"><button class="btn btn-primary">Home</button></a>
+	<br><br><br>
 	<br>
 
 	<div class="container-fluid">
-		
+
 		<div class="row">
-			
+
 			<div class="col-md-3">
-				
+
 				<div class="roundCorner" style="background-color: var(--lightGrey); padding: 10px">
 
 					<center>
@@ -38,13 +40,13 @@
 			</div>
 
 			<div class="col-md-9">
-				
+
 				<div class="row roundCorner" style="background-color: var(--lightGrey); padding: 10px">
 
 					<div class="col">
 
 						<center>
-							
+
 							<table width="85%">
 
 								<tr>
@@ -58,7 +60,7 @@
 									<td><input type="text" id="userNameInp" value="{{ name }}" disabled="true"></td>
 									<td><button class="btn btn-info" id="userNameEdit" onclick="editName()"><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
 								</tr>
-								
+
 								<tr>
 									<td><strong>Email:</strong></td>
 									<td><input type="text" id="userEmailInp" value="{{ email }}" disabled="true"></td>
@@ -115,26 +117,26 @@
 								<tr>
 									<td><strong>Occupancy:</strong></td>
 									<td><input type="checkbox" id="occupancyCheck" {{ occupancy }} onclick="editOccupancy()">Occupying</td>
-									
+
 								</tr>
 
 							</table>
 
 						</center>
-						
+
 					</div>
 					<div class="col">
 
 						<center>
 
 							<table width="85%">
-								
+
 								<tr>
 									<td><strong>ID Proof</strong></td>
 									<td><button class="btn btn-info" data-toggle="modal" data-target="#viewIdProofModal">View</button></td>
 									<td><button class="btn btn-info" data-toggle="modal" data-target="#uploadIdProofModal">Upload</button></td>
 								</tr>
-								
+
 								<tr>
 									<td><strong>Communication Address Proof</strong></td>
 									<td><button class="btn btn-info" data-toggle="modal" data-target="#viewCommAddProofModal">View</button></td>
@@ -154,9 +156,9 @@
 								</tr>
 
 							</table>
-							
+
 						</center>
-						
+
 					</div>
 				</div>
 
@@ -178,7 +180,7 @@
 	    				<input type="file" name="photoFile"/>
 	    				<input type="submit" value="Update Photo" />
 	    			</form>
-	    			
+
 	    		</div>
 		    </div>
 		</div>
@@ -196,7 +198,7 @@
 	    				<input type="file" name="photoFile"/>
 	    				<input type="submit" value="Upload ID Proof" />
 	    			</form>
-	    			
+
 	    		</div>
 		    </div>
 		</div>
@@ -214,7 +216,7 @@
 	    				<input type="file" name="photoFile"/>
 	    				<input type="submit" value="Upload Communication Address Proof" />
 	    			</form>
-	    			
+
 	    		</div>
 		    </div>
 		</div>
@@ -232,7 +234,7 @@
 	    				<input type="file" name="photoFile"/>
 	    				<input type="submit" value="Upload Permanent Address Proof" />
 	    			</form>
-	    			
+
 	    		</div>
 		    </div>
 		</div>
@@ -250,7 +252,7 @@
 	    				<input type="file" name="photoFile"/>
 	    				<input type="submit" value="Upload Sale Deed" />
 	    			</form>
-	    			
+
 	    		</div>
 		    </div>
 		</div>
@@ -321,7 +323,7 @@
 	</div>
 
 <script>
-	
+
 	uid = "{{ uid }}";
 	tid = "{{ tid }}";
 

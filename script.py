@@ -159,16 +159,16 @@ def welcomeH():
 		userTypeHTML =""
 
 	elif(userType==1):
-		userTypeHTML = "<a style=\"color:black;font-size:25px;text-decoration:none;\" href=\"President\">President</a>"
+		userTypeHTML = "<a style=\"color:black;font-size:25px;text-decoration:none;\" href=\"President\"> <button type=\"button\" class=\"btn btn-warning\"> President</button></a>"
 
 	elif(userType==2):
-		userTypeHTML = "<a  style=\"color:black;font-size:25px;text-decoration:none;\" href=\"Secretary\" >Secretary</a>"
+		userTypeHTML = "<a  style=\"color:black;font-size:25px;text-decoration:none;\" href=\"Secretary\" > <button type=\"button\" class=\"btn btn-warning\"> Secretary</button></a>"
 
 	elif(userType==3):
-		userTypeHTML = "<a  style=\"color:black;font-size:25px;text-decoration:none;\" href=\"Treasurer\" >Treasurer</a>"
+		userTypeHTML = "<a  style=\"color:black;font-size:25px;text-decoration:none;\" href=\"Treasurer\" ><button type=\"button\" class=\"btn btn-warning\">Treasurer</button></a>"
 
 	elif(userType==4):
-		userTypeHTML = "<a  style=\"color:black;font-size:25px;text-decoration:none;\" href=\"OfficeBearer\" >OfficeBearer</a>"
+		userTypeHTML = "<a  style=\"color:black;font-size:25px;text-decoration:none;\" href=\"OfficeBearer\" ><button type=\"button\" class=\"btn btn-warning\">OfficeBearer</button></a>"
 	else:
 		pass
 
@@ -320,7 +320,7 @@ def Profile():
 	carp_area = request.form['carp_area']
 	built_area = request.form['built_area']
 	registered=0;
-	conn.execute("INSERT INTO apartments (aptNo, registered, bedrooms, bathrooms, area, parking_area) VALUES ('"+aptNo+"', 0, '"+bedroom+"', '"+bathroom+"', '"+carp_area+"', '"+built_area+"')")
+	conn.execute("INSERT INTO apartments (aptNo, registered, bedrooms, bathrooms, area, parking) VALUES ('"+aptNo+"', 0, '"+bedroom+"', '"+bathroom+"', '"+carp_area+"', '"+built_area+"')")
 	conn.commit()
 	conn.close()
 	return redirect(url_for("approveProfile"))
@@ -645,13 +645,18 @@ def duespayment():
 		return redirect(url_for('login'))
 
 
+	conn = sqlite3.connect('data/data.db')
+	cursor = conn.execute("SELECT * FROM apartments WHERE aptNo='"+uid+"'")
+	cursor = cursor.fetchall()
+	regMonth = cursor[0][1]
+
 	today = datetime.today()
 	year = today.year
 	month = today.month
 	monthNum = (year - 1970) * 12 + month
-	
+
 	months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-	conn = sqlite3.connect('data/data.db')
+
 	auid = str(uid)
 	tuid = auid.replace('/', '_')
 	yuid = tuid.replace('-', '_')
