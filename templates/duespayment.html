@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Make Payments</title>
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='myStyles.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='myScripts.js') }}"></script>
+
+</head>
+<body class="bgSet">
+  <a href="/logout" style="float: right; margin: 10px"><button class="btn btn-primary">Logout</button></a>
+  <a href="/welcomeH" style="float: right; margin: 10px"><button class="btn btn-primary">Home</button></a>
+	<br>
+	<h4>Welcome {{ user }}!</h4>
+	<br><br><br><br><br>
+
+  <center>
+        <div class="roundCorner" style="background-color: var(--lightGrey); padding: 10px; max-width: 500px">
+						<center>
+                {{ income|safe }}
+                <h6>{{ payDet | safe}}</h6>
+            </center>
+        </div>
+  </center>
+
+  <script>
+
+  	uid = "{{ user }}";
+  	maintAmt = {{ maintAmt }};
+
+  	monthsCtr = 0;
+
+  	function addCtr(){
+  		monthsCtr++;
+  		document.getElementById('payBtn').disabled = false;
+  		document.getElementById('monthsCtr').innerText = monthsCtr;
+  		document.getElementById('payBtn').innerText = 'Pay \u20B9 ' + maintAmt * monthsCtr +'/-'
+  	}
+
+  	function subCtr(){
+  		if (monthsCtr > 0)
+  			monthsCtr--;
+  		if (monthsCtr == 0)
+  			document.getElementById('payBtn').disabled = true;
+  		document.getElementById('monthsCtr').innerText = monthsCtr;
+  		document.getElementById('payBtn').innerText = 'Pay \u20B9 ' + maintAmt * monthsCtr +'/-'
+  	}
+
+  	function makePayment(){
+
+  		var request = new XMLHttpRequest();
+
+  		request.onload = function(){
+  			if (request.responseText != "failure"){
+  				alert("Payment successful!\nTransaction id: " + request.responseText)
+  				location.reload();
+  			}
+  			else{
+  				alert(request.responseText)
+  			}
+  			document.getElementById('payBtn').disabled = false;
+
+
+  		};
+  		document.getElementById('payBtn').disabled = true;
+
+  		request.open("GET", "/makePayment/"+monthsCtr, true);
+      	request.send();
+  	}
+
+  </script>
+
+  </body>
+  </html>

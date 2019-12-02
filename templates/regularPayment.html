@@ -36,20 +36,21 @@
 
 					<center>
 						<font style="font-size: 20px"><strong>Maintenance Payment</strong></font><br><br>
-						
+
 						<label for="category" style="text-align:center;">Category</label><br>
-						
+
 						<select id="category" name="category" onchange="selectChanged()">
 							<option value="selOpt">[Select Category]</option>
 							<option value="Contingency">Contingency</option>
 							<option value="Electrical">Electrical</option>
 							<option value="Electrical Inspection">Electrical Inspection</option>
+							<option value="Employee Salary">Employee Salary</option>
 							<option value="Fire Insurance">Fire Insurance</option>
 							<option value="Generator">Generator</option>
 							<option value="Lift Maintenance">Lift Maintenance</option>
 							<option value="Water">Water</option>
 						</select>
-					
+
 					</center>
 
 					<br><br>
@@ -290,6 +291,10 @@
 		}
 		else if (category == "Electrical Inspection"){
 			payWhom.innerText = "MESCOM Inspec";
+			payHowMuch.disabled = false;
+		}
+		else if (category == "Employee Salary"){
+			payWhom.innerText = "Employee Salary Corp.";
 			payHowMuch.disabled = false;
 		}
 

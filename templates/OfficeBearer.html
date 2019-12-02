@@ -20,8 +20,32 @@
 
 <body class="bgSet">
 	<a href="/logout" style="float: right; margin: 10px"><button class="btn btn-primary">Logout</button></a>
-	<br>
+	<br><br><br>
 
+	<button type="button" class="btn btn-warning">Responsibilty</button>
+  <button type="button" class="btn btn-warning" onclick="displayFlatOwner()">View Flat Owner</button>
+	<a href="/viewIncomeExpenditure"><button type="button" class="btn btn-warning">View Income & Expenditure</button></a>
+	<button type="button" class="btn btn-warning" onclick="viewComplaint()">View Complaint</button>
+	<a href="/showNotice"><button type="button" class="btn btn-warning">View Notice</button></a>
+	<button type="button" class="btn btn-warning">Approve Expenditure/Work</button>
 
+	<script>
+
+			function approveProfile(){
+				window.location.href='/approveProfile';
+			}
+
+			function displayFlatOwner(){
+				window.location.href='/displayFlatOwner';
+			}
+
+			function viewComplaint(){
+				window.location.href='/viewComplaint';
+			}
+			function approveNotice(){
+				window.location.href='/approveNotice';
+			}
+	</script>
 
 </body>
+</html>

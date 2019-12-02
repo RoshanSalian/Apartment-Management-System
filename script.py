@@ -108,6 +108,10 @@ def Secretary():
 def Treasurer():
 	return render_template('Treasurer.html')
 
+@app.route("/OfficeBearer")
+def OfficeBearer():
+	return render_template('OfficeBearer.html')
+
 
 @app.route("/welcomeH")
 def welcomeH():
@@ -162,6 +166,9 @@ def welcomeH():
 
 	elif(userType==3):
 		userTypeHTML = "<a  style=\"color:black;font-size:25px;text-decoration:none;\" href=\"Treasurer\" >Treasurer</a>"
+
+	elif(userType==4):
+		userTypeHTML = "<a  style=\"color:black;font-size:25px;text-decoration:none;\" href=\"OfficeBearer\" >OfficeBearer</a>"
 	else:
 		pass
 
@@ -629,6 +636,66 @@ def updateComplaintStatus2(id):
 	cursor.execute("UPDATE complaint set status='Denied' where id='"+id+"' ")
 	conn.commit()
 	conn.close()
+
+@app.route('/duespayment')
+def duespayment():
+	if 'user' in session:
+		uid = session['user']
+	else:
+		return redirect(url_for('login'))
+
+
+	today = datetime.today()
+	year = today.year
+	month = today.month
+	monthNum = (year - 1970) * 12 + month
+	
+	months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+	conn = sqlite3.connect('data/data.db')
+	auid = str(uid)
+	tuid = auid.replace('/', '_')
+	yuid = tuid.replace('-', '_')
+	wuid = "Maint_" + yuid
+	# print(wuid)
+
+	cursor = conn.execute("SELECT * FROM "+wuid+"  ")
+	cursor = cursor.fetchall()
+
+	if len(cursor) != 0:
+		lastMonth = cursor[-1][0]
+	else:
+		lastMonth = regMonth - 1
+
+	toPay = monthNum - lastMonth
+
+	income = "<table width='300px' cellpadding='5'>\n<tr>\n<th><center>Month</center></th>\n<th><center>Transaction Id</center></th>\n</tr>\n"
+	incTot = 0
+
+	for row in cursor:
+		y = row[0] // 12 + 1970
+		m = row[0] % 12
+		if m == 0:
+			m = 12
+			y -= 1
+		income += "<tr>\n<td><center>"+str(months[m-1])+"</center></td>\n<td><center>&#8377; "+str(row[1])+"</center></td>\n</tr>\n"
+
+	income += "</table>"
+
+	# if len(cursor) != 0:
+	# 	lastMonth = cursor[-1][0]
+	# else:
+	# 	lastMonth = regMonth - 1
+	#
+	# toPay = monthNum - lastMonth
+
+	if toPay > 0:
+		payDet = "You need to <strong>pay</strong> maintenance for <strong>" + str(toPay) + " months</strong>."
+	elif toPay == 0:
+		payDet = "Your maintenance payment is <strong>settled up!</strong>"
+	else:
+		payDet = "You have paid maintenance for <strong>" + str(-1 * toPay) + " months</strong> in <strong>advance</strong>."
+
+	return render_template('duespayment.html', income=income, payDet = payDet)
 
 @app.route('/payment')
 def payment():

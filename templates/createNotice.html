@@ -23,10 +23,10 @@
   <a href="/welcomeH" style="float: right; margin: 10px"><button class="btn btn-primary">Home</button></a>
   <br>
 
-
+	<center>
   <div class="displayNotice" style="text-align:center">
 		<center>
-			<table width="65%" align="center;" style="margin: 0px auto;">
+			<table width="65%" align="center;" style="margin: 0px auto; background-color: var(--lightGrey); padding: 10px; max-width: 500px">
 				<tr>
 					<td><b>Referenece</b></td>
 			    <td><b>Date</b></td>
@@ -46,15 +46,16 @@
 					<td>{{item[4]}}</td>
           <td>{{item[5]}}</td>
           <td>{{item[6]}}</td>
-					<td><button class="btn btn-danger" id={{item[0]}} onclick='javascript: deleteNotice({{item[0]}})'><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
+					<td><button class="btn btn-danger" id={{item[0]}} onclick='javascript: deleteNotice("{{item[0]}}")'><i class="fa fa-pencil" style="font-size: 15px"></i></button></td>
 				<tr>
 				{% endfor %}
 			</table>
 		</center>
 	</div>
+</center>
 
-
-  <div class="form-group" style="text-align:center;margin-top:20px">
+	<center>
+  <div class="form-group roundCorner" style="text-align:center;margin-top:20px; background-color: var(--lightGrey); padding: 10px; max-width: 500px">
     <form action="{{ url_for('recordNotice') }}" method="post" style="margin-top:100px;	">
 				<h3>Create Notice</h3>
         <label for="ref_no" style="text-align:center;">Referenece Number</label><br>
@@ -74,11 +75,13 @@
         <input type="submit" value="Submit">
     </form>
   </div>
+</center>
 
 <script>
   function deleteNotice(id){
     var request = new XMLHttpRequest();
 		var id = id;
+		alert(id)
     request.open("GET", "/deleteNotice/"+id);
     request.send();
   }
